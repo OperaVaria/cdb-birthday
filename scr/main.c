@@ -26,48 +26,46 @@ see <https://www.gnu.org/licenses/>
 #include <time.h>
 #include "sqlite/sqlite3.h"
 
-
 // Function prototypes:
 int select_menu(void);
 void main_switch(int selected_opt);
-char* add_setup(char* sql_statement);
-char* del_setup(char* sql_statement);
-char* check_setup(char* sql_statement);
-char* list_all_setup(char* sql_statement);
+char *add_setup(char *sql_statement);
+char *del_setup(char *sql_statement);
+char *check_setup(char *sql_statement);
+char *list_all_setup(char *sql_statement);
 void create_table(void);
-void db_op(char* sql_statement);
+void db_op(char *sql_statement);
 void clear_input_buffer(void);
 static int sql_callback(void *data, int argc, char **argv, char **azColName);
 
-
 // Main function:
-int main(void) {
+int main(void)
+{
 
     // Initial text.
     printf("CDbBirthday v0.0.1\n");
     printf("By OperaVaria\n");
 
     // Application loop.
-    while (true) {
-        
+    while (true)
+    {
         /* Check if db file and correct table exists.
            If not, create it. */
         create_table();
-        
+
         // Run select menu.
         int selected_opt = select_menu();
 
         // Pass selected option to main switch.
         main_switch(selected_opt);
-
     }
-    
+
     return 0;
 }
 
 // Main option menu:
-int select_menu(void) {
-
+int select_menu(void)
+{
     // Default user option value.
     int user_option = 0;
 
@@ -84,29 +82,31 @@ int select_menu(void) {
     scanf("%d", &user_option);
 
     // Validate input with retry loop, clear input buffer.
-    while (user_option != 1  && user_option != 2 && user_option != 3 && user_option != 4 && user_option != 5) {
+    while (user_option != 1 && user_option != 2 && user_option != 3 && user_option != 4 && user_option != 5)
+    {
         printf("Invalid choice, try again (1-5): ");
         scanf("%d", &user_option);
         clear_input_buffer();
     }
-    
+
     // Return selected option.
     return user_option;
 }
 
 // Main switch:
-void main_switch(int selected_opt) {
-
+void main_switch(int selected_opt)
+{
     // Declare SQL statement string.
-    char* sql_statement;
-    sql_statement = malloc(sizeof (char) * 512);
+    char *sql_statement;
+    sql_statement = malloc(sizeof(char) * 512);
 
     // Clear input buffer.
     clear_input_buffer();
 
     // Call functions based on selected menu option.
-    switch (selected_opt) {
-    case 1:        
+    switch (selected_opt)
+    {
+    case 1:
         sql_statement = add_setup(sql_statement);
         db_op(sql_statement);
         printf("Completed.\n");
@@ -131,7 +131,7 @@ void main_switch(int selected_opt) {
         db_op(sql_statement);
         printf("Returning to main menu...\n");
         break;
-    
+
     case 5:
         printf("\nExiting...\n\n");
         exit(0);
@@ -140,12 +140,11 @@ void main_switch(int selected_opt) {
 
     // Free memory.
     free(sql_statement);
-
 }
 
 // Add to database setup:
-char* add_setup(char* sql_statement) {
-
+char *add_setup(char *sql_statement)
+{
     // Initialize string variables.
     char nickname[25], first_name[25], last_name[25], birth_date[25], sql_buffer[512];
 
@@ -167,7 +166,9 @@ char* add_setup(char* sql_statement) {
     birth_date[strcspn(birth_date, "\n")] = 0;
 
     // Create SQL statement.
-    snprintf(sql_buffer, sizeof(sql_buffer), "INSERT INTO birthdays (nickname, first_name, last_name, birth_date) VALUES ('%s', '%s', '%s', '%s'); ", nickname, first_name, last_name, birth_date);
+    snprintf(sql_buffer, sizeof(sql_buffer),
+        "INSERT INTO birthdays (nickname, first_name, last_name, birth_date) VALUES ('%s', '%s', '%s', '%s'); ",
+        nickname, first_name, last_name, birth_date);
     strcpy(sql_statement, sql_buffer);
 
     // Print notification.
@@ -178,8 +179,8 @@ char* add_setup(char* sql_statement) {
 }
 
 // Delete item from database setup:
-char* del_setup(char* sql_statement) {
-
+char *del_setup(char *sql_statement)
+{
     // Initialize string variables.
     char nickname[25], sql_buffer[512];
 
@@ -189,7 +190,8 @@ char* del_setup(char* sql_statement) {
     nickname[strcspn(nickname, "\n")] = 0;
 
     // Create SQL statement.
-    snprintf(sql_buffer, sizeof(sql_buffer), "DELETE from birthdays WHERE nickname = '%s'; ", nickname);
+    snprintf(sql_buffer, sizeof(sql_buffer),
+        "DELETE from birthdays WHERE nickname = '%s'; ", nickname);
     strcpy(sql_statement, sql_buffer);
 
     // Print notification.
@@ -200,11 +202,11 @@ char* del_setup(char* sql_statement) {
 }
 
 // Check today's birthdays setup:
-char* check_setup(char* sql_statement) {
-
+char *check_setup(char *sql_statement)
+{
     // Declare variables.
-    time_t timer;    
-    struct tm* tm_info;
+    time_t timer;
+    struct tm *tm_info;
     char form_date[10], sql_buffer[512];
 
     // Get date.
@@ -215,7 +217,8 @@ char* check_setup(char* sql_statement) {
     strftime(form_date, 26, ".%m.%d", tm_info);
 
     // Create SQL statement.
-    snprintf(sql_buffer, sizeof(sql_buffer), "SELECT * FROM birthdays WHERE birth_date LIKE '%%%s'; ", form_date);
+    snprintf(sql_buffer, sizeof(sql_buffer),
+        "SELECT * FROM birthdays WHERE birth_date LIKE '%%%s'; ", form_date);
     strcpy(sql_statement, sql_buffer);
 
     // Print notification.
@@ -226,8 +229,8 @@ char* check_setup(char* sql_statement) {
 }
 
 // List all items setup:
-char* list_all_setup(char* sql_statement) {
-
+char *list_all_setup(char *sql_statement)
+{
     // Create SQL statement.
     strcpy(sql_statement, "SELECT * FROM birthdays");
 
@@ -239,65 +242,67 @@ char* list_all_setup(char* sql_statement) {
 }
 
 // Create "birthdays" table if it does not exits:
-void create_table(void) {
-
+void create_table(void)
+{
     // Statement for SQL table structure creation.
     char table_structure[150] = "CREATE TABLE IF NOT EXISTS 'birthdays' "
-	                              "('nickname'	TEXT NOT NULL UNIQUE, "
-	                              "'first_name'	TEXT, "
-	                              "'last_name'	TEXT, "
-	                              "'birth_date'	TEXT)";
+                                "('nickname'	TEXT NOT NULL UNIQUE, "
+                                "'first_name'	TEXT, "
+                                "'last_name'	TEXT, "
+                                "'birth_date'	TEXT)";
 
     // Call DB operation function.
     db_op(table_structure);
-
 }
 
 // Database operation function:
-void db_op(char* sql_statement) {
-
+void db_op(char *sql_statement)
+{
     // Initialize variables.
     sqlite3 *db;
-    char *sql_err_msg = 0;    
-    const char* callb_data = "Item";
+    char *sql_err_msg = 0;
+    const char *callb_data = "Item";
     int rc;
 
     // Open database.
     rc = sqlite3_open("birthdays.db", &db);
 
     // Opening error handling.
-    if (rc) {
-       fprintf(stderr, "Cannot open database. Error message: %s\n\n", sqlite3_errmsg(db));
-       return;
+    if (rc)
+    {
+        fprintf(stderr, "Cannot open database. Error message: %s\n\n", sqlite3_errmsg(db));
+        return;
     }
 
     // Execute SQL statement.
-    rc = sqlite3_exec(db, sql_statement, sql_callback, (void*)callb_data, &sql_err_msg);
+    rc = sqlite3_exec(db, sql_statement, sql_callback, (void *)callb_data, &sql_err_msg);
 
     // Execution error handling.
-    if (rc != SQLITE_OK ) {
-       fprintf(stderr, "SQL error. Error message: %s\n", sql_err_msg);
-       sqlite3_free(sql_err_msg);
+    if (rc != SQLITE_OK)
+    {
+        fprintf(stderr, "SQL error. Error message: %s\n", sql_err_msg);
+        sqlite3_free(sql_err_msg);
     }
 
     // Close database.
     sqlite3_close(db);
-    
 }
 
 // Clear input buffer with getchar loop:
-void clear_input_buffer(void) {
+void clear_input_buffer(void)
+{
     while ((getchar()) != '\n');
 }
 
 // SQLite callback function for formatted SELECT output:
-static int sql_callback(void *callb_data, int argc, char **argv, char **col_name) {
+static int sql_callback(void *callb_data, int argc, char **argv, char **col_name)
+{
     int i;
-    fprintf(stderr, "%s: \n", (const char*)callb_data);   
-    for(i = 0; i<argc; i++){
-       printf("%s = %s\n", col_name[i], argv[i] ? argv[i] : "NULL");
-    }   
+    fprintf(stderr, "%s: \n", (const char *)callb_data);
+    for (i = 0; i < argc; i++)
+    {
+        printf("%s = %s\n", col_name[i], argv[i] ? argv[i] : "NULL");
+    }
     printf("\n");
     return 0;
 }
-
