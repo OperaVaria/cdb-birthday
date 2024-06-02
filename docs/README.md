@@ -6,7 +6,7 @@ birthday information in an SQLite database. Database entries can be easily store
 The program is built mainly as a programming exercise and showcase.
 
 The project uses the SQLite C/C++ interface, it's amalgamation file is attached
-for easier compilation. The SQLite code is in the **[public domain](https://sqlite.org/copyright.html)**
+for easier compilation. The SQLite code **[is in the public domain](https://sqlite.org/copyright.html)**.
 
 Windows and Linux binaries are included. Tested on: Windows 11, Lubuntu 22.04 LTS.
 
