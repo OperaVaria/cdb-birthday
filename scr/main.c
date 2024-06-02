@@ -83,7 +83,7 @@ int select_menu(void) {
     // Get user input.
     scanf("%d", &user_option);
 
-    // Validate input with retry loop.
+    // Validate input with retry loop, clear input buffer.
     while (user_option != 1  && user_option != 2 && user_option != 3 && user_option != 4 && user_option != 5) {
         printf("Invalid choice, try again (1-5): ");
         scanf("%d", &user_option);
@@ -146,10 +146,10 @@ void main_switch(int selected_opt) {
 // Add to database setup:
 char* add_setup(char* sql_statement) {
 
-    // Initialize variables.
+    // Initialize string variables.
     char nickname[25], first_name[25], last_name[25], birth_date[25], sql_buffer[512];
 
-    // Prompts for information.
+    // Prompt for information, store with fgets, strip new line.
     printf("Nickname? ");
     fgets(nickname, 25, stdin);
     nickname[strcspn(nickname, "\n")] = 0;
@@ -180,10 +180,10 @@ char* add_setup(char* sql_statement) {
 // Delete item from database setup:
 char* del_setup(char* sql_statement) {
 
-    // Initialize variables.
+    // Initialize string variables.
     char nickname[25], sql_buffer[512];
 
-    // Prompts for information.
+    // Prompt for information, store with fgets, strip new line.
     printf("Nickname? ");
     fgets(nickname, sizeof(nickname), stdin);
     nickname[strcspn(nickname, "\n")] = 0;
