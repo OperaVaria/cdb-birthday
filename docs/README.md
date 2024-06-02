@@ -1,6 +1,6 @@
 # CDBBirthday - A birthday database app written is C
 
-More info latter.
+More info later.
 
 ---
 
