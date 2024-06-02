@@ -258,8 +258,8 @@ void db_op(char* sql_statement) {
 
     // Initialize variables.
     sqlite3 *db;
-    char *zErrMsg = 0;    
-    const char* data = "Item";
+    char *sql_err_msg = 0;    
+    const char* callb_data = "Item";
     int rc;
 
     // Open database.
@@ -272,12 +272,12 @@ void db_op(char* sql_statement) {
     }
 
     // Execute SQL statement.
-    rc = sqlite3_exec(db, sql_statement, sql_callback, (void*)data, &zErrMsg);
+    rc = sqlite3_exec(db, sql_statement, sql_callback, (void*)callb_data, &sql_err_msg);
 
     // Execution error handling.
     if (rc != SQLITE_OK ) {
-       fprintf(stderr, "SQL error. Error message: %s\n", zErrMsg);
-       sqlite3_free(zErrMsg);
+       fprintf(stderr, "SQL error. Error message: %s\n", sql_err_msg);
+       sqlite3_free(sql_err_msg);
     }
 
     // Close database.
@@ -291,11 +291,11 @@ void clear_input_buffer(void) {
 }
 
 // SQLite callback function for formatted SELECT output:
-static int sql_callback(void *data, int argc, char **argv, char **azColName) {
+static int sql_callback(void *callb_data, int argc, char **argv, char **col_name) {
     int i;
-    fprintf(stderr, "%s: \n", (const char*)data);   
+    fprintf(stderr, "%s: \n", (const char*)callb_data);   
     for(i = 0; i<argc; i++){
-       printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+       printf("%s = %s\n", col_name[i], argv[i] ? argv[i] : "NULL");
     }   
     printf("\n");
     return 0;
