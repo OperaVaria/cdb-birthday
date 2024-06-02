@@ -37,7 +37,6 @@ char* list_all_setup(char* sql_statement);
 void create_table(void);
 void db_op(char* sql_statement);
 void clear_input_buffer(void);
-char* fgets_wrapper(char* output_string);
 static int sql_callback(void *data, int argc, char **argv, char **azColName);
 
 
