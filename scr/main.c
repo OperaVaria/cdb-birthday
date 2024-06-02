@@ -44,8 +44,8 @@ int callb_called = 0; // SQL callback function call counter.
 // Identifier constants for SQL calls:
 const int CREATE = 1; // CREATE SQL call.
 const int INSERT = 2; // INSERT SQL call.
-const int DELETE = 3; // INSERT SQL call.
-const int SELECT = 4; // INSERT SQL call.
+const int DELETE = 3; // DELETE SQL call.
+const int SELECT = 4; // SELECT SQL call.
 
 // Main function:
 int main(void)
