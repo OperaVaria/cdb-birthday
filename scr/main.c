@@ -214,7 +214,7 @@ char *check_setup(char *sql_statement)
     tm_info = localtime(&timer);
 
     // Format date.
-    strftime(form_date, 26, ".%m.%d", tm_info);
+    strftime(form_date, 10, ".%m.%d", tm_info);
 
     // Create SQL statement.
     snprintf(sql_buffer, sizeof(sql_buffer),
