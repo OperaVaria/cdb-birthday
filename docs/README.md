@@ -1,6 +1,9 @@
-# CDBBirthday - A birthday database app written is C
+# CDbBirthday
 
-More info later.
+A simple, lightweight command line application, written in C, to store
+birthday information in an SQLite database.
+
+Windows and Linux binaries included.
 
 ---
 
