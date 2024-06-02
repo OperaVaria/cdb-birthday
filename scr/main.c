@@ -34,9 +34,18 @@ char *del_setup(char *sql_statement);
 char *check_setup(char *sql_statement);
 char *list_all_setup(char *sql_statement);
 void create_table(void);
-void db_op(char *sql_statement);
+void db_op(char *sql_statement, int call_type);
 void clear_input_buffer(void);
 static int sql_callback(void *data, int argc, char **argv, char **azColName);
+
+// Global variables:
+int callb_called = 0; // SQL callback function call counter.
+
+// Identifier constants for SQL calls:
+const int CREATE = 1; // CREATE SQL call.
+const int INSERT = 2; // INSERT SQL call.
+const int DELETE = 3; // INSERT SQL call.
+const int SELECT = 4; // INSERT SQL call.
 
 // Main function:
 int main(void)
@@ -108,27 +117,27 @@ void main_switch(int selected_opt)
     {
     case 1:
         sql_statement = add_setup(sql_statement);
-        db_op(sql_statement);
+        db_op(sql_statement, INSERT);
         printf("Completed.\n");
         printf("Returning to main menu...\n");
         break;
 
     case 2:
         sql_statement = del_setup(sql_statement);
-        db_op(sql_statement);
+        db_op(sql_statement, DELETE);
         printf("Completed.\n");
         printf("Returning to main menu...\n");
         break;
 
     case 3:
         sql_statement = check_setup(sql_statement);
-        db_op(sql_statement);
+        db_op(sql_statement, SELECT);
         printf("Returning to main menu...\n");
         break;
 
     case 4:
         sql_statement = list_all_setup(sql_statement);
-        db_op(sql_statement);
+        db_op(sql_statement, SELECT);
         printf("Returning to main menu...\n");
         break;
 
@@ -252,11 +261,11 @@ void create_table(void)
                                 "'birth_date'	TEXT)";
 
     // Call DB operation function.
-    db_op(table_structure);
+    db_op(table_structure, CREATE);
 }
 
 // Database operation function:
-void db_op(char *sql_statement)
+void db_op(char *sql_statement, int call_type)
 {
     // Initialize variables.
     sqlite3 *db;
@@ -284,6 +293,15 @@ void db_op(char *sql_statement)
         sqlite3_free(sql_err_msg);
     }
 
+    // Message if no result.
+    if (call_type == SELECT && callb_called == 0)
+    {
+        printf("No items found!\n\n");
+    }
+
+    // Reset callback call counter.
+    callb_called = 0;
+
     // Close database.
     sqlite3_close(db);
 }
@@ -297,12 +315,22 @@ void clear_input_buffer(void)
 // SQLite callback function for formatted SELECT output:
 static int sql_callback(void *callb_data, int argc, char **argv, char **col_name)
 {
+    // Declare for loop counter.
     int i;
-    fprintf(stderr, "%s: \n", (const char *)callb_data);
+
+    // Advance callback call counter.
+    callb_called++;
+
+    // Print item number.
+    fprintf(stderr, "%s #%d: \n", (const char *)callb_data, callb_called);
+
+    // Print item rows.
     for (i = 0; i < argc; i++)
     {
-        printf("%s = %s\n", col_name[i], argv[i] ? argv[i] : "NULL");
+        printf("%s: %s\n", col_name[i], argv[i] ? argv[i] : "NULL");
     }
     printf("\n");
+
+    // Return value must be 0 for SQLite.
     return 0;
 }
