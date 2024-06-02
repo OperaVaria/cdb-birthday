@@ -19,12 +19,13 @@ see <https://www.gnu.org/licenses/>
 */
 
 // Header files:
+#include <pthread.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include "sqlite/sqlite3.h"
+#include <sqlite3.h>
 
 // Function prototypes:
 int select_menu(void);
