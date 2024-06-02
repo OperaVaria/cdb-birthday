@@ -25,7 +25,7 @@ see <https://www.gnu.org/licenses/>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <sqlite3.h>
+#include "./sqlite3.h"
 
 // Function prototypes:
 int select_menu(void);
