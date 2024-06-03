@@ -1,6 +1,6 @@
 /*
 
-CDbBirthday v1.0.0
+CDbBirthday v1.1.0
 By OperaVaria, 2024
 
 A simple, lightweight command line application, written in C, to store
@@ -29,7 +29,7 @@ see <https://www.gnu.org/licenses/>
 
 // Function prototypes:
 int select_menu(void);
-void main_switch(int selected_opt);
+void main_switch(int sel_opt);
 char *add_setup(char *sql_statement);
 char *del_setup(char *sql_statement);
 char *check_setup(char *sql_statement);
@@ -41,6 +41,7 @@ static int sql_callback(void *data, int argc, char **argv, char **azColName);
 
 // Global variables:
 int callb_called = 0; // SQL callback function call counter.
+bool loop_active = true; // Boolean to keep main loop active. 
 
 // Identifier constants for SQL calls:
 const int CREATE = 1; // CREATE SQL call.
@@ -56,18 +57,18 @@ int main(void)
     printf("CDbBirthday v1.0.0\n");
     printf("By OperaVaria\n");
 
-    // Application loop.
-    while (true)
-    {
-        /* Check if db file and correct table exists.
-           If not, create it. */
-        create_table();
+    /* Check if db file and correct table exists.
+    If not, create it. */
+    create_table();
 
+    // Application loop.
+    while (loop_active)
+    {
         // Run select menu.
-        int selected_opt = select_menu();
+        int sel_opt = select_menu();
 
         // Pass selected option to main switch.
-        main_switch(selected_opt);
+        main_switch(sel_opt);
     }
 
     return 0;
@@ -77,44 +78,42 @@ int main(void)
 int select_menu(void)
 {
     // Default user option value.
-    int user_option = 0;
+    int user_opt = 0;
 
     // Menu text.
-    printf("\nSelect action:\n");
-    printf("1. Add birthday to DB\n");
-    printf("2. Remove birthday from DB\n");
-    printf("3. Check today's birthdays\n");
-    printf("4. List all entries\n");
-    printf("5. Exit\n");
-    printf("1,2,3,4 or 5? ");
+    printf("\nSelect option:\n");
+    printf("1) Add a birthday entry.\n");
+    printf("2) Delete a birthday entry.\n");
+    printf("3) Check birthdays for today.\n");
+    printf("4) List all birthday entries.\n");
+    printf("5) Exit.\n\n");
+
+    // Input prompt.
+    printf("Enter your choice (1-5): ");
 
     // Get user input.
-    scanf("%d", &user_option);
-
-    // Validate input with retry loop, clear input buffer.
-    while (user_option != 1 && user_option != 2 && user_option != 3 && user_option != 4 && user_option != 5)
-    {
-        printf("Invalid choice, try again (1-5): ");
-        scanf("%d", &user_option);
-        clear_input_buffer();
-    }
+    scanf("%d", &user_opt);
+    clear_input_buffer();
+    printf("\n");
 
     // Return selected option.
-    return user_option;
+    return user_opt;
 }
 
 // Main switch:
-void main_switch(int selected_opt)
+void main_switch(int sel_opt)
 {
-    // Declare SQL statement string.
+    // Declare SQL statement string, allocate memory.
     char *sql_statement;
-    sql_statement = malloc(sizeof(char) * 512);
-
-    // Clear input buffer.
-    clear_input_buffer();
+    sql_statement = malloc(sizeof(char) * 256);
+    if (sql_statement == NULL)
+    {
+        fprintf(stderr, "Memory allocation failed.\n");
+        exit(EXIT_FAILURE);
+    }
 
     // Call functions based on selected menu option.
-    switch (selected_opt)
+    switch (sel_opt)
     {
     case 1:
         sql_statement = add_setup(sql_statement);
@@ -143,8 +142,12 @@ void main_switch(int selected_opt)
         break;
 
     case 5:
-        printf("\nExiting...\n\n");
-        exit(0);
+        printf("Exiting...\n\n");
+        loop_active = false;
+        break;
+
+    default:
+        printf("Invalid option, try again!\n");
         break;
     }
 
@@ -156,23 +159,23 @@ void main_switch(int selected_opt)
 char *add_setup(char *sql_statement)
 {
     // Initialize string variables.
-    char nickname[25], first_name[25], last_name[25], birth_date[25], sql_buffer[512];
+    char nickname[25], first_name[25], last_name[25], birth_date[11], sql_buffer[256];
 
     // Prompt for information, store with fgets, strip new line.
     printf("Nickname? ");
-    fgets(nickname, 25, stdin);
+    fgets(nickname, sizeof(nickname), stdin);
     nickname[strcspn(nickname, "\n")] = 0;
 
     printf("First name? ");
-    fgets(first_name, 25, stdin);
+    fgets(first_name, sizeof(first_name), stdin);
     first_name[strcspn(first_name, "\n")] = 0;
 
     printf("Last name? ");
-    fgets(last_name, 25, stdin);
+    fgets(last_name, sizeof(last_name), stdin);
     last_name[strcspn(last_name, "\n")] = 0;
 
     printf("Date of birth (yyyy.mm.dd format): ");
-    fgets(birth_date, 25, stdin);
+    fgets(birth_date, sizeof(birth_date), stdin);
     birth_date[strcspn(birth_date, "\n")] = 0;
 
     // Create SQL statement.
@@ -192,7 +195,7 @@ char *add_setup(char *sql_statement)
 char *del_setup(char *sql_statement)
 {
     // Initialize string variables.
-    char nickname[25], sql_buffer[512];
+    char nickname[25], sql_buffer[256];
 
     // Prompt for information, store with fgets, strip new line.
     printf("Nickname? ");
@@ -214,10 +217,10 @@ char *del_setup(char *sql_statement)
 // Check today's birthdays setup:
 char *check_setup(char *sql_statement)
 {
-    // Declare variables.
+    // Initialize variables.
     time_t timer;
     struct tm *tm_info;
-    char form_date[10], sql_buffer[512];
+    char form_date[11], sql_buffer[256];
 
     // Get date.
     timer = time(NULL);
@@ -232,7 +235,7 @@ char *check_setup(char *sql_statement)
     strcpy(sql_statement, sql_buffer);
 
     // Print notification.
-    printf("\nListing birthdays today...\n\n");
+    printf("Listing birthdays today...\n\n");
 
     // Return SQL statement.
     return sql_statement;
@@ -245,7 +248,7 @@ char *list_all_setup(char *sql_statement)
     strcpy(sql_statement, "SELECT * FROM birthdays");
 
     // Print notification.
-    printf("\nListing all items...\n\n");
+    printf("Listing all items...\n\n");
 
     // Return SQL statement.
     return sql_statement;
@@ -280,7 +283,7 @@ void db_op(char *sql_statement, int call_type)
     // Opening error handling.
     if (rc)
     {
-        fprintf(stderr, "Cannot open database. Error message: %s\n\n", sqlite3_errmsg(db));
+        fprintf(stderr, "Cannot open database. Error message = %s\n\n", sqlite3_errmsg(db));
         return;
     }
 
@@ -290,7 +293,7 @@ void db_op(char *sql_statement, int call_type)
     // Execution error handling.
     if (rc != SQLITE_OK)
     {
-        fprintf(stderr, "SQL error. Error message: %s\n", sql_err_msg);
+        fprintf(stderr, "SQL error. Error message = %s\n", sql_err_msg);
         sqlite3_free(sql_err_msg);
     }
 
@@ -310,7 +313,8 @@ void db_op(char *sql_statement, int call_type)
 // Clear input buffer with getchar loop:
 void clear_input_buffer(void)
 {
-    while ((getchar()) != '\n');
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF) { }
 }
 
 // SQLite callback function for formatted SELECT output:
