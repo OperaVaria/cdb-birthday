@@ -54,7 +54,7 @@ int main(void)
 {
 
     // Initial text.
-    printf("CDbBirthday v1.0.0\n");
+    printf("CDbBirthday v1.1.0\n");
     printf("By OperaVaria\n");
 
     /* Check if db file and correct table exists.
