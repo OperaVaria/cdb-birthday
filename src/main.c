@@ -32,7 +32,7 @@ int select_menu(void);
 void main_switch(int sel_opt);
 char *add_setup(char *sql_statement);
 char *del_setup(char *sql_statement);
-char *check_setup(char *sql_statement);
+char *check_setup(char *sql_statement, char const *date_spec);
 char *list_all_setup(char *sql_statement);
 void create_table(void);
 void db_op(char *sql_statement, int call_type);
@@ -43,11 +43,13 @@ static int sql_callback(void *data, int argc, char **argv, char **azColName);
 int callb_called = 0; // SQL callback function call counter.
 bool loop_active = true; // Boolean to keep main loop active. 
 
-// Identifier constants for SQL calls:
+// Identifier constants for function calls:
 const int CREATE = 1; // CREATE SQL call.
 const int INSERT = 2; // INSERT SQL call.
 const int DELETE = 3; // DELETE SQL call.
 const int SELECT = 4; // SELECT SQL call.
+const char MONTH[] = ".%m."; // Month specifier.
+const char DAY[] = ".%m.%d"; // Month and day specifier.
 
 // Main function:
 int main(void)
@@ -84,12 +86,13 @@ int select_menu(void)
     printf("\nSelect option:\n");
     printf("1) Add a birthday entry.\n");
     printf("2) Delete a birthday entry.\n");
-    printf("3) Check birthdays for today.\n");
-    printf("4) List all birthday entries.\n");
-    printf("5) Exit.\n\n");
+    printf("3) Check birthdays for current month.\n");
+    printf("4) Check birthdays for today.\n");
+    printf("5) List all birthday entries.\n");
+    printf("6) Exit.\n\n");
 
     // Input prompt.
-    printf("Enter your choice (1-5): ");
+    printf("Enter your choice (1-6): ");
 
     // Get user input.
     scanf("%d", &user_opt);
@@ -130,18 +133,24 @@ void main_switch(int sel_opt)
         break;
 
     case 3:
-        sql_statement = check_setup(sql_statement);
+        sql_statement = check_setup(sql_statement, MONTH);
         db_op(sql_statement, SELECT);
         printf("Returning to main menu...\n");
         break;
 
     case 4:
-        sql_statement = list_all_setup(sql_statement);
+        sql_statement = check_setup(sql_statement, DAY);
         db_op(sql_statement, SELECT);
         printf("Returning to main menu...\n");
         break;
 
     case 5:
+        sql_statement = list_all_setup(sql_statement);
+        db_op(sql_statement, SELECT);
+        printf("Returning to main menu...\n");
+        break;
+
+    case 6:
         printf("Exiting...\n\n");
         loop_active = false;
         break;
@@ -214,29 +223,39 @@ char *del_setup(char *sql_statement)
     return sql_statement;
 }
 
-// Check today's birthdays setup:
-char *check_setup(char *sql_statement)
+// Check certain date's birthdays setup:
+char *check_setup(char *sql_statement, char const *date_spec)
 {
     // Initialize variables.
     time_t timer;
     struct tm *tm_info;
-    char form_date[11], sql_buffer[256];
+    char form_date[11], sql_buffer[256], month_name[10];
 
     // Get date.
     timer = time(NULL);
     tm_info = localtime(&timer);
 
     // Format date.
-    strftime(form_date, 10, ".%m.%d", tm_info);
+    strftime(form_date, 10, date_spec, tm_info);
 
     // Create SQL statement.
     snprintf(sql_buffer, sizeof(sql_buffer),
-        "SELECT * FROM birthdays WHERE birth_date LIKE '%%%s'; ", form_date);
+        "SELECT * FROM birthdays WHERE birth_date LIKE '%%%s%%'; ", form_date);
     strcpy(sql_statement, sql_buffer);
 
-    // Print notification.
-    printf("Listing birthdays today...\n\n");
+    // Print notification based on call type.
+    if (date_spec == DAY)
+    {
+        printf("Listing birthdays for today...\n\n");
+    }
+    else if (date_spec == MONTH)
+    {
+        // Get current month name.
+        strftime(month_name, 10, "%B", tm_info);
 
+        // Print.
+        printf("Listing birthdays in %s...\n\n", month_name);
+    }
     // Return SQL statement.
     return sql_statement;
 }
