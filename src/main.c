@@ -327,7 +327,7 @@ static int sql_callback(void *callb_data, int argc, char **argv, char **col_name
     callb_called++;
 
     // Print item number.
-    fprintf(stderr, "%s #%d: \n", (const char *)callb_data, callb_called);
+    printf("%s #%d: \n", (const char *)callb_data, callb_called);
 
     // Print item rows.
     for (i = 0; i < argc; i++)
