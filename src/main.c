@@ -277,7 +277,7 @@ char *list_all_setup(char *sql_statement)
 void create_table(void)
 {
     // Statement for SQL table structure creation.
-    char table_structure[150] = "CREATE TABLE IF NOT EXISTS 'birthdays' "
+    char table_structure[] = "CREATE TABLE IF NOT EXISTS 'birthdays' "
                                 "('nickname'	TEXT NOT NULL UNIQUE, "
                                 "'first_name'	TEXT, "
                                 "'last_name'	TEXT, "
