@@ -11,11 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - "List birthdays in current month" functionality.
 
+### Changed
+
+- Constants refactored.
+
 ### Fixed
 
 - Minor fixes.
-
-### Changed
 
 ## [1.1.0] - 2024.06.03
 
