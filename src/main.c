@@ -18,13 +18,41 @@ see <https://www.gnu.org/licenses/>
 
 */
 
-// Header files:
+//////////////////////////////
+// "Imported" header files: //
+//////////////////////////////
+
+// Standard library.
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+
+// Local header files.
 #include "./sqlite3.h"
+
+//////////////////////////////
+// Preprocessor directives: //
+//////////////////////////////
+
+// SQL operation call type.
+#define CREATE 1
+#define INSERT 2
+#define DELETE 3
+#define SELECT 4
+
+///////////////////
+// Declarations: //
+///////////////////
+
+// Date specifier constants.
+const char MONTH[] = ".%m.";
+const char DAY[] = ".%m.%d";
+
+// Global variables:
+int callb_called = 0; // SQL callback function call counter.
+bool loop_active = true; // Boolean to keep main loop active.
 
 // Function prototypes:
 int select_menu(void);
@@ -38,22 +66,13 @@ void db_op(char *sql_statement, int call_type);
 void clear_input_buffer(void);
 static int sql_callback(void *data, int argc, char **argv, char **azColName);
 
-// Global variables:
-int callb_called = 0; // SQL callback function call counter.
-bool loop_active = true; // Boolean to keep main loop active. 
-
-// Identifier constants for function calls:
-const int CREATE = 1; // CREATE SQL call.
-const int INSERT = 2; // INSERT SQL call.
-const int DELETE = 3; // DELETE SQL call.
-const int SELECT = 4; // SELECT SQL call.
-const char MONTH[] = ".%m."; // Month specifier.
-const char DAY[] = ".%m.%d"; // Month and day specifier.
+////////////////
+// Functions: //
+////////////////
 
 // Main function:
 int main(void)
 {
-
     // Initial text.
     printf("CDbBirthday v1.1.0\n");
     printf("By OperaVaria\n");
