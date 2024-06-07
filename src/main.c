@@ -357,9 +357,6 @@ void clear_input_buffer(void)
 // SQLite callback function for formatted SELECT output:
 static int sql_callback(void *callb_data, int argc, char **argv, char **col_name)
 {
-    // Declare for loop counter.
-    int i;
-
     // Advance callback call counter.
     callb_called++;
 
@@ -367,7 +364,7 @@ static int sql_callback(void *callb_data, int argc, char **argv, char **col_name
     printf("%s #%d: \n", (const char *)callb_data, callb_called);
 
     // Print item rows.
-    for (i = 0; i < argc; i++)
+    for (int i = 0; i < argc; i++)
     {
         printf("%s: %s\n", col_name[i], argv[i] ? argv[i] : "NULL");
     }
