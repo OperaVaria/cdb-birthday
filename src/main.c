@@ -18,37 +18,25 @@ see <https://www.gnu.org/licenses/>
 
 */
 
-//////////////////////////////
-// "Imported" header files: //
-//////////////////////////////
-
-// Standard library.
+// Header files:
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-
-// Local header files.
 #include "./sqlite3.h"
 
-//////////////////////////////
-// Preprocessor directives: //
-//////////////////////////////
+// Preprocessor macros:
 
-// SQL operation call type.
+// SQL call type constants.
 #define CREATE 1
 #define INSERT 2
 #define DELETE 3
 #define SELECT 4
 
-///////////////////
-// Declarations: //
-///////////////////
-
 // Date specifier constants.
-const char MONTH[] = ".%m.";
-const char DAY[] = ".%m.%d";
+#define MONTH ".%m."
+#define DAY ".%m.%d"
 
 // Global variables:
 int callb_called = 0; // SQL callback function call counter.
@@ -59,16 +47,12 @@ int select_menu(void);
 void main_switch(int sel_opt);
 char *add_setup(char *sql_statement);
 char *del_setup(char *sql_statement);
-char *check_setup(char *sql_statement, char const *date_spec);
+char *check_setup(char *sql_statement, char date_spec[]);
 char *list_all_setup(char *sql_statement);
 void create_table(void);
 void db_op(char *sql_statement, int call_type);
 void clear_input_buffer(void);
 static int sql_callback(void *data, int argc, char **argv, char **azColName);
-
-////////////////
-// Functions: //
-////////////////
 
 // Main function:
 int main(void)
@@ -242,7 +226,7 @@ char *del_setup(char *sql_statement)
 }
 
 // Check certain date's birthdays setup:
-char *check_setup(char *sql_statement, char const *date_spec)
+char *check_setup(char *sql_statement, char date_spec[])
 {
     // Initialize variables.
     time_t timer;
