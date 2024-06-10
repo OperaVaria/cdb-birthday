@@ -38,6 +38,9 @@ see <https://www.gnu.org/licenses/>
 #define MONTH ".%m."
 #define DAY ".%m.%d"
 
+// Function-like macros.
+#define between(x, a, b)  (((a) <= (x)) && ((x) <= (b)))
+
 // Global variables:
 int callb_called = 0; // SQL callback function call counter.
 bool loop_active = true; // Boolean to keep main loop active.
@@ -123,33 +126,26 @@ void main_switch(int sel_opt)
     case 1:
         sql_statement = add_setup(sql_statement);
         db_op(sql_statement, INSERT);
-        printf("Completed.\n");
-        printf("Returning to main menu...\n");
         break;
 
     case 2:
         sql_statement = del_setup(sql_statement);
         db_op(sql_statement, DELETE);
-        printf("Completed.\n");
-        printf("Returning to main menu...\n");
         break;
 
     case 3:
         sql_statement = check_setup(sql_statement, MONTH);
         db_op(sql_statement, SELECT);
-        printf("Returning to main menu...\n");
         break;
 
     case 4:
         sql_statement = check_setup(sql_statement, DAY);
         db_op(sql_statement, SELECT);
-        printf("Returning to main menu...\n");
         break;
 
     case 5:
         sql_statement = list_all_setup(sql_statement);
-        db_op(sql_statement, SELECT);
-        printf("Returning to main menu...\n");
+        db_op(sql_statement, SELECT);        
         break;
 
     case 6:
@@ -160,6 +156,18 @@ void main_switch(int sel_opt)
     default:
         printf("Invalid option, try again!\n");
         break;
+    }
+
+    // Print messages after operations:
+    
+    if (between(sel_opt, 1, 2))
+    {
+        printf("Completed.\n");
+    }
+
+    if (between(sel_opt, 1, 5))
+    {
+        printf("Returning to main menu...\n");
     }
 
     // Free memory.
