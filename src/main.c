@@ -34,6 +34,9 @@ see <https://www.gnu.org/licenses/>
 #define DELETE 3
 #define SELECT 4
 
+// SQL statement max length.
+#define MAX_LENGTH 256
+
 // Date specifier constants.
 #define MONTH ".%m."
 #define DAY ".%m.%d"
@@ -54,7 +57,7 @@ char *check_setup(char *sql_statement, char date_spec[]);
 char *list_all_setup(char *sql_statement);
 void create_table(void);
 void db_op(char *sql_statement, int call_type);
-void clear_input_buffer(void);
+char *fgets_prompt (char prompt[], int string_size);
 static int sql_callback(void *data, int argc, char **argv, char **azColName);
 
 // Main function:
@@ -101,8 +104,7 @@ int select_menu(void)
 
     // Get user input.
     scanf("%d", &user_opt);
-    clear_input_buffer();
-    printf("\n");
+    scanf("%*[^\n]");
 
     // Return selected option.
     return user_opt;
@@ -113,7 +115,7 @@ void main_switch(int sel_opt)
 {
     // Declare SQL statement string, allocate memory.
     char *sql_statement;
-    sql_statement = malloc(sizeof(char) * 256);
+    sql_statement = malloc(sizeof(char) * MAX_LENGTH);
     if (sql_statement == NULL)
     {
         fprintf(stderr, "Memory allocation failed.\n");
@@ -154,12 +156,12 @@ void main_switch(int sel_opt)
         break;
 
     default:
-        printf("Invalid option, try again!\n");
+        printf("\nInvalid option, try again!\n");        
         break;
     }
 
     // Print messages after operations:
-    
+
     if (between(sel_opt, 1, 2))
     {
         printf("Completed.\n");
@@ -177,31 +179,19 @@ void main_switch(int sel_opt)
 // Add to database setup:
 char *add_setup(char *sql_statement)
 {
-    // Initialize string variables.
-    char nickname[25], first_name[25], last_name[25], birth_date[11], sql_buffer[256];
-
-    // Prompt for information, store with fgets, strip new line.
-    printf("Nickname? ");
-    fgets(nickname, sizeof(nickname), stdin);
-    nickname[strcspn(nickname, "\n")] = 0;
-
-    printf("First name? ");
-    fgets(first_name, sizeof(first_name), stdin);
-    first_name[strcspn(first_name, "\n")] = 0;
-
-    printf("Last name? ");
-    fgets(last_name, sizeof(last_name), stdin);
-    last_name[strcspn(last_name, "\n")] = 0;
-
-    printf("Date of birth (yyyy.mm.dd format): ");
-    fgets(birth_date, sizeof(birth_date), stdin);
-    birth_date[strcspn(birth_date, "\n")] = 0;
+    // Prompt for information, create variables.
+    char *nickname = fgets_prompt("Nickname? ", 25);
+    char *first_name = fgets_prompt("First name? ", 25);
+    char *last_name = fgets_prompt("Last name? ", 25);
+    char *birth_date = fgets_prompt("Date of birth (yyyy.mm.dd format): ", 11);
 
     // Create SQL statement.
-    snprintf(sql_buffer, sizeof(sql_buffer),
-        "INSERT INTO birthdays (nickname, first_name, last_name, birth_date) VALUES ('%s', '%s', '%s', '%s'); ",
+    snprintf(sql_statement, MAX_LENGTH,
+        "INSERT INTO birthdays (nickname, first_name, last_name, birth_date) VALUES ('%s', '%s', '%s', '%s');",
         nickname, first_name, last_name, birth_date);
-    strcpy(sql_statement, sql_buffer);
+    
+    // Free memory.
+    free(nickname); free(first_name); free(last_name); free(birth_date);
 
     // Print notification.
     printf("\nAdding item...\n");
@@ -213,18 +203,15 @@ char *add_setup(char *sql_statement)
 // Delete item from database setup:
 char *del_setup(char *sql_statement)
 {
-    // Initialize string variables.
-    char nickname[25], sql_buffer[256];
-
-    // Prompt for information, store with fgets, strip new line.
-    printf("Nickname? ");
-    fgets(nickname, sizeof(nickname), stdin);
-    nickname[strcspn(nickname, "\n")] = 0;
+    // Prompt for information, create variables.
+    char *nickname = fgets_prompt("Nickname? ", 25);
 
     // Create SQL statement.
-    snprintf(sql_buffer, sizeof(sql_buffer),
-        "DELETE from birthdays WHERE nickname = '%s'; ", nickname);
-    strcpy(sql_statement, sql_buffer);
+    snprintf(sql_statement, MAX_LENGTH,
+        "DELETE from birthdays WHERE nickname = '%s';", nickname);
+    
+    // Free memory.
+    free(nickname);
 
     // Print notification.
     printf("\nRemoving item...\n");
@@ -239,7 +226,7 @@ char *check_setup(char *sql_statement, char date_spec[])
     // Initialize variables.
     time_t timer;
     struct tm *tm_info;
-    char form_date[11], sql_buffer[256], month_name[10];
+    char form_date[11], month_name[10];
 
     // Get date.
     timer = time(NULL);
@@ -249,9 +236,8 @@ char *check_setup(char *sql_statement, char date_spec[])
     strftime(form_date, 10, date_spec, tm_info);
 
     // Create SQL statement.
-    snprintf(sql_buffer, sizeof(sql_buffer),
-        "SELECT * FROM birthdays WHERE birth_date LIKE '%%%s%%'; ", form_date);
-    strcpy(sql_statement, sql_buffer);
+    snprintf(sql_statement, MAX_LENGTH,
+        "SELECT * FROM birthdays WHERE birth_date LIKE '%%%s%%';", form_date);
 
     // Print notification based on call type.
     if (date_spec == DAY)
@@ -264,8 +250,9 @@ char *check_setup(char *sql_statement, char date_spec[])
         strftime(month_name, 10, "%B", tm_info);
 
         // Print.
-        printf("Listing birthdays in %s...\n\n", month_name);
+        printf("Listing birthdays for the month %s...\n\n", month_name);
     }
+    
     // Return SQL statement.
     return sql_statement;
 }
@@ -339,11 +326,35 @@ void db_op(char *sql_statement, int call_type)
     sqlite3_close(db);
 }
 
-// Clear input buffer with getchar loop:
-void clear_input_buffer(void)
-{
+// String retrieval prompt with fgets.
+char *fgets_prompt (char prompt[], int string_size) {
+
+    // Initialize pointer.
+    char* buffer;
+
+    // Allocate memory.
+    buffer = malloc(sizeof(char) * string_size);
+    if (buffer == NULL)
+    {
+        fprintf(stderr, "Memory allocation failed.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Display prompt.
+    printf(prompt);  
+
+    // Store input.
+    fgets(buffer, string_size, stdin);
+
+    // Remove newline.
+    buffer[strcspn(buffer, "\n")] = 0;
+    
+    // Clear stdin buffer.
     int c;
     while ((c = getchar()) != '\n' && c != EOF) { }
+
+    // Return stored input string.
+    return buffer;
 }
 
 // SQLite callback function for formatted SELECT output:
