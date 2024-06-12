@@ -15,7 +15,8 @@ Part of the CDbBirthday project by OperaVaria.
 // Function prototypes.
 char *add_setup(char *sql_statement);
 char *del_setup(char *sql_statement);
-char *check_setup(char *sql_statement, char date_spec[]);
+char *check_entry_setup(char *sql_statement);
+char *check_date_setup(char *sql_statement, char date_spec[]);
 char *list_all_setup(char *sql_statement);
 void create_table(void);
 

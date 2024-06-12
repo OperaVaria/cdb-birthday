@@ -28,13 +28,14 @@ int select_menu(void)
     printf("\nSelect option:\n");
     printf("1) Add a birthday entry.\n");
     printf("2) Delete a birthday entry.\n");
-    printf("3) Check birthdays for current month.\n");
-    printf("4) Check birthdays for today.\n");
-    printf("5) List all birthday entries.\n");
-    printf("6) Exit.\n\n");
+    printf("3) Check if birthday entry exist.\n");
+    printf("4) Check birthdays for current month.\n");
+    printf("5) Check birthdays for today.\n");
+    printf("6) List all birthday entries.\n");
+    printf("7) Exit.\n\n");
 
     // Get user input.
-    char *buffer = fgets_prompt("Enter your choice (1-6): ", 5);
+    char *buffer = fgets_prompt("Enter your choice (1-7): ", 5);
     sscanf(buffer, "%d", &user_opt);
     free(buffer);
 
@@ -61,31 +62,42 @@ void main_switch(int sel_opt)
     switch (sel_opt)
     {
     case 1:
+        // Add.
         sql_statement = add_setup(sql_statement);
         db_op(sql_statement, INSERT);
         break;
 
     case 2:
+        // Delete.
         sql_statement = del_setup(sql_statement);
         db_op(sql_statement, DELETE);
         break;
-
+    
     case 3:
-        sql_statement = check_setup(sql_statement, MONTH);
+        // Check single entry.
+        sql_statement = check_entry_setup(sql_statement);
         db_op(sql_statement, SELECT);
         break;
 
     case 4:
-        sql_statement = check_setup(sql_statement, DAY);
+        // Check current month.
+        sql_statement = check_date_setup(sql_statement, MONTH);
         db_op(sql_statement, SELECT);
         break;
 
     case 5:
+        // Check current day.
+        sql_statement = check_date_setup(sql_statement, DAY);
+        db_op(sql_statement, SELECT);
+        break;
+
+    case 6:
+        // List all.
         sql_statement = list_all_setup(sql_statement);
         db_op(sql_statement, SELECT);        
         break;
 
-    case 6:
+    case 7:
         printf("Exiting...\n\n");
         loop_active = false;
         break;
@@ -102,7 +114,7 @@ void main_switch(int sel_opt)
         printf("Completed.\n");
     }
 
-    if (between(sel_opt, 1, 5))
+    if (between(sel_opt, 1, 6))
     {
         printf("Returning to main menu...\n");
     }

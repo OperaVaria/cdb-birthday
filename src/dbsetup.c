@@ -63,9 +63,29 @@ char *del_setup(char *sql_statement)
     return sql_statement;
 }
 
+// Check if single entry exist.
+char *check_entry_setup(char *sql_statement)
+{
+    // Prompt for information, create variables.
+    char *nickname = fgets_prompt("Nickname? ", 25);
+
+    // Create SQL statement.
+    snprintf(sql_statement, MAX_LENGTH,
+        "SELECT * from birthdays WHERE nickname = '%s';", nickname);
+    
+    // Free memory.
+    free(nickname);
+
+    // Print notification.
+    printf("\nChecking item...\n");
+
+    // Return SQL statement.
+    return sql_statement;
+}
+
 
 // Check certain date's birthdays setup:
-char *check_setup(char *sql_statement, char date_spec[])
+char *check_date_setup(char *sql_statement, char date_spec[])
 {
     // Declare variables.
     time_t timer;
