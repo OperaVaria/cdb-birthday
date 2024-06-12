@@ -30,7 +30,7 @@ char *fgets_prompt (char prompt[], int string_size) {
     }
 
     // Display prompt.
-    printf(prompt);  
+    printf("%s", prompt);  
 
     // Store input.
     fgets(buffer, string_size, stdin);
