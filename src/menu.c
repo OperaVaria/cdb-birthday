@@ -33,12 +33,13 @@ int select_menu(void)
     printf("5) List all birthday entries.\n");
     printf("6) Exit.\n\n");
 
-    // Input prompt.
-    printf("Enter your choice (1-6): ");
-
     // Get user input.
-    scanf("%d", &user_opt);
-    scanf("%*[^\n]");
+    char *buffer = fgets_prompt("Enter your choice (1-6): ", 5);
+    sscanf(buffer, "%d", &user_opt);
+    free(buffer);
+
+    // Print newline.
+    printf("\n");
 
     // Return selected option.
     return user_opt;
@@ -90,7 +91,7 @@ void main_switch(int sel_opt)
         break;
 
     default:
-        printf("\nInvalid option, try again!\n");        
+        printf("Invalid option, try again!\n");        
         break;
     }
 

@@ -35,13 +35,18 @@ char *fgets_prompt (char prompt[], int string_size) {
     // Store input.
     fgets(buffer, string_size, stdin);
 
-    // Remove newline at the end.
-    buffer[strcspn(buffer, "\n")] = 0;
+    // Clear stdin buffer if more characters than the variable size entered.
+    if (buffer[strlen(buffer) - 1] != '\n')
+    {
+        int c = 0;
+        while ((c = getchar()) != '\n' && c != EOF) { }
+    }
+    // Otherwise truncate newline from string.
+    else
+    {
+        buffer[strcspn(buffer, "\n")] = 0;
+    }
     
-    // Clear stdin buffer.
-    int c;
-    while ((c = getchar()) != '\n' && c != EOF) { }
-
     // Return stored input string.
     return buffer;
 }
