@@ -59,7 +59,6 @@ void db_op(char *sql_statement, int call_type)
     sqlite3_close(db);
 }
 
-
 // SQLite callback function for formatted SELECT output:
 static int sql_callback(void *callb_data, int argc, char **argv, char **col_name)
 {

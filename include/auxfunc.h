@@ -13,6 +13,6 @@ Part of the CDbBirthday project by OperaVaria.
 #define AUXFUNC_H
 
 // Function prototypes.
-char *fgets_prompt (char prompt[], int string_size);
+char *fgets_prompt(char prompt[], int string_size);
 
 #endif

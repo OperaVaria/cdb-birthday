@@ -72,7 +72,7 @@ void main_switch(int sel_opt)
         sql_statement = del_setup(sql_statement);
         db_op(sql_statement, DELETE);
         break;
-    
+
     case 3:
         // Check single entry.
         sql_statement = check_entry_setup(sql_statement);
@@ -94,7 +94,7 @@ void main_switch(int sel_opt)
     case 6:
         // List all.
         sql_statement = list_all_setup(sql_statement);
-        db_op(sql_statement, SELECT);        
+        db_op(sql_statement, SELECT);
         break;
 
     case 7:
@@ -103,7 +103,7 @@ void main_switch(int sel_opt)
         break;
 
     default:
-        printf("Invalid option, try again!\n");        
+        printf("Invalid option, try again!\n");
         break;
     }
 

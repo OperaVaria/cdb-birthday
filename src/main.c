@@ -25,7 +25,7 @@ see <https://www.gnu.org/licenses/>
 #include "menu.h"
 
 // Global variables:
-int callb_called = 0; // SQL callback function call counter.
+int callb_called = 0;    // SQL callback function call counter.
 bool loop_active = true; // Boolean to keep main loop active.
 
 // Main function:

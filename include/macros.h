@@ -1,4 +1,4 @@
-/* 
+/*
 
 macros.h
 
@@ -27,6 +27,6 @@ Part of the CDbBirthday project by OperaVaria.
 #define DAY ".%m.%d"
 
 // Function-like macros.
-#define between(x, a, b)  (((a) <= (x)) && ((x) <= (b)))
+#define between(x, a, b) (((a) <= (x)) && ((x) <= (b)))
 
 #endif

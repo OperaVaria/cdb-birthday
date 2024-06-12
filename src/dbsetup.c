@@ -29,9 +29,9 @@ char *add_setup(char *sql_statement)
 
     // Create SQL statement.
     snprintf(sql_statement, MAX_LENGTH,
-        "INSERT INTO birthdays (nickname, first_name, last_name, birth_date) VALUES ('%s', '%s', '%s', '%s');",
-        nickname, first_name, last_name, birth_date);
-    
+             "INSERT INTO birthdays (nickname, first_name, last_name, birth_date) VALUES ('%s', '%s', '%s', '%s');",
+             nickname, first_name, last_name, birth_date);
+
     // Free memory.
     free(nickname); free(first_name); free(last_name); free(birth_date);
 
@@ -42,7 +42,6 @@ char *add_setup(char *sql_statement)
     return sql_statement;
 }
 
-
 // Delete item from database setup:
 char *del_setup(char *sql_statement)
 {
@@ -51,8 +50,8 @@ char *del_setup(char *sql_statement)
 
     // Create SQL statement.
     snprintf(sql_statement, MAX_LENGTH,
-        "DELETE from birthdays WHERE nickname = '%s';", nickname);
-    
+             "DELETE from birthdays WHERE nickname = '%s';", nickname);
+
     // Free memory.
     free(nickname);
 
@@ -71,8 +70,8 @@ char *check_entry_setup(char *sql_statement)
 
     // Create SQL statement.
     snprintf(sql_statement, MAX_LENGTH,
-        "SELECT * from birthdays WHERE nickname = '%s';", nickname);
-    
+             "SELECT * from birthdays WHERE nickname = '%s';", nickname);
+
     // Free memory.
     free(nickname);
 
@@ -82,7 +81,6 @@ char *check_entry_setup(char *sql_statement)
     // Return SQL statement.
     return sql_statement;
 }
-
 
 // Check certain date's birthdays setup:
 char *check_date_setup(char *sql_statement, char date_spec[])
@@ -101,7 +99,7 @@ char *check_date_setup(char *sql_statement, char date_spec[])
 
     // Create SQL statement.
     snprintf(sql_statement, MAX_LENGTH,
-        "SELECT * FROM birthdays WHERE birth_date LIKE '%%%s%%';", form_date);
+             "SELECT * FROM birthdays WHERE birth_date LIKE '%%%s%%';", form_date);
 
     // Print notification based on call type.
     if (date_spec == DAY)
@@ -116,11 +114,10 @@ char *check_date_setup(char *sql_statement, char date_spec[])
         // Print.
         printf("Listing birthdays for the month %s...\n\n", month_name);
     }
-    
+
     // Return SQL statement.
     return sql_statement;
 }
-
 
 // List all items setup:
 char *list_all_setup(char *sql_statement)
@@ -135,16 +132,15 @@ char *list_all_setup(char *sql_statement)
     return sql_statement;
 }
 
-
 // Create "birthdays" table if it does not exits:
 void create_table(void)
 {
     // Statement for SQL table structure creation.
     char table_structure[] = "CREATE TABLE IF NOT EXISTS 'birthdays' "
-                                "('nickname'	TEXT NOT NULL UNIQUE, "
-                                "'first_name'	TEXT, "
-                                "'last_name'	TEXT, "
-                                "'birth_date'	TEXT)";
+                             "('nickname'	TEXT NOT NULL UNIQUE, "
+                             "'first_name'	TEXT, "
+                             "'last_name'	TEXT, "
+                             "'birth_date'	TEXT)";
 
     // Call DB operation function.
     db_op(table_structure, CREATE);

@@ -16,10 +16,10 @@ Part of the CDbBirthday project by OperaVaria.
 #include "macros.h"
 
 // String retrieval prompt with fgets.
-char *fgets_prompt (char prompt[], int string_size) {
-
+char *fgets_prompt(char prompt[], int string_size)
+{
     // Declare pointer.
-    char* buffer;
+    char *buffer;
 
     // Allocate memory.
     buffer = malloc(sizeof(char) * string_size);
@@ -30,7 +30,7 @@ char *fgets_prompt (char prompt[], int string_size) {
     }
 
     // Display prompt.
-    printf("%s", prompt);  
+    printf("%s", prompt);
 
     // Store input.
     fgets(buffer, string_size, stdin);
@@ -46,7 +46,7 @@ char *fgets_prompt (char prompt[], int string_size) {
     {
         buffer[strcspn(buffer, "\n")] = 0;
     }
-    
+
     // Return stored input string.
     return buffer;
 }
