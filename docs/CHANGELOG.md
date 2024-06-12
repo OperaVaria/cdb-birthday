@@ -10,14 +10,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - "List birthdays in current month" functionality.
+- Makefile.
 
 ### Changed
 
-- Constants refactored.
+- Complete refactor, switched to multi file code.
+- Scanfs eliminated.
 
 ### Fixed
 
-- Minor fixes.
+- Input buffer bug fixed.
+- Other minor fixes.
 
 ## [1.1.0] - 2024.06.03
 
