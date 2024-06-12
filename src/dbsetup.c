@@ -9,7 +9,12 @@ Part of the CDbBirthday project by OperaVaria.
 */
 
 // Header files:
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <time.h>
+#include "auxfunc.h"
+#include "dbop.h"
 #include "dbsetup.h"
 #include "macros.h"
 
@@ -62,7 +67,7 @@ char *del_setup(char *sql_statement)
 // Check certain date's birthdays setup:
 char *check_setup(char *sql_statement, char date_spec[])
 {
-    // Initialize variables.
+    // Declare variables.
     time_t timer;
     struct tm *tm_info;
     char form_date[11], month_name[10];

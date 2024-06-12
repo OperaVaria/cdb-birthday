@@ -12,8 +12,8 @@ Part of the CDbBirthday project by OperaVaria.
 #ifndef MENU_H
 #define MENU_H
 
-// External global variable (main.c).
-extern bool loop_active = true;
+// Include global variable (from main.c).
+extern bool loop_active;
 
 // Function prototypes.
 int select_menu(void);

@@ -20,8 +20,9 @@ see <https://www.gnu.org/licenses/>
 
 // Header files:
 #include <stdbool.h>
-#include "lib/menu.h"
-#include "lib/dbsetup.h"
+#include <stdio.h>
+#include "dbsetup.h"
+#include "menu.h"
 
 // Global variables:
 int callb_called = 0; // SQL callback function call counter.

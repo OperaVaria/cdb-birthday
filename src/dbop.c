@@ -12,7 +12,7 @@ Part of the CDbBirthday project by OperaVaria.
 #include <stdio.h>
 #include "dbop.h"
 #include "macros.h"
-#include "sqlite3/sqlite3.h"
+#include "sqlite3.h"
 
 // Static callback function prototype.
 static int sql_callback(void *data, int argc, char **argv, char **azColName);
@@ -20,7 +20,7 @@ static int sql_callback(void *data, int argc, char **argv, char **azColName);
 // Database operation function:
 void db_op(char *sql_statement, int call_type)
 {
-    // Initialize variables.
+    // Declare and define variables.
     sqlite3 *db;
     char *sql_err_msg = 0;
     const char *callb_data = "Item";

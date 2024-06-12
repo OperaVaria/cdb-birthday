@@ -12,6 +12,9 @@ Part of the CDbBirthday project by OperaVaria.
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "auxfunc.h"
+#include "dbop.h"
+#include "dbsetup.h"
 #include "macros.h"
 #include "menu.h"
 
