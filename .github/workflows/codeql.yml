@@ -81,7 +81,7 @@ jobs:
       shell: bash
       run: |
         make all
-        exit 0
+        make clean
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
