@@ -32,7 +32,7 @@ bool loop_active = true; // Boolean to keep main loop active.
 int main(void)
 {
     // Initial text.
-    printf("CDbBirthday v1.1.0\n");
+    printf("CDbBirthday v1.2.0\n");
     printf("By OperaVaria\n\n");
 
     /* Check if db file and correct table exists.
