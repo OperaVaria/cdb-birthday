@@ -9,6 +9,7 @@ Part of the CDbBirthday project by OperaVaria.
 */
 
 // Header files:
+#include <ctype.h>
 #include <stdio.h>
 #include "dbop.h"
 #include "macros.h"
@@ -24,7 +25,7 @@ void db_op(char *sql_statement, int call_type)
     sqlite3 *db;
     char *sql_err_msg = 0;
     const char *callb_data = "Item";
-    int rc;
+    int changes, rc;
 
     // Open database.
     rc = sqlite3_open("birthdays.db", &db);
@@ -46,10 +47,36 @@ void db_op(char *sql_statement, int call_type)
         sqlite3_free(sql_err_msg);
     }
 
-    // Message if no result.
-    if (call_type == SELECT && callb_called == 0)
+    // Messages for no result:
+
+    if (call_type == SELECT)
     {
-        printf("No items found!\n\n");
+        if (callb_called == 0)
+        {
+            printf("No item(s) found!\n");
+        }
+        else
+        {
+            printf("Process completed.\n");
+        }
+    }
+    else if (call_type == DELETE)
+    {
+        // Get the number of rows modified in last call.
+        changes = sqlite3_changes(db);
+
+        if (changes == 0)
+        {
+            printf("Entry does not exist.\n");
+        }
+        else
+        {
+            printf("Item removed.\n");
+        }
+    }
+    else
+    {
+        printf("Process completed.\n");
     }
 
     // Reset callback call counter.

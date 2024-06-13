@@ -9,6 +9,7 @@ Part of the CDbBirthday project by OperaVaria.
 */
 
 // Header files:
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -49,4 +50,21 @@ char *fgets_prompt(char prompt[], int string_size)
 
     // Return stored input string.
     return buffer;
+}
+
+// Validate if user input date is of the correct format (yyyy.mm.dd).
+bool validate_date_form(char input_string[])
+{
+    if (strlen(input_string) != 10)  return false; 
+    if (!isdigit(input_string[0]))  return false; 
+    if (!isdigit(input_string[1]))  return false;
+    if (!isdigit(input_string[2]))  return false; 
+    if (!isdigit(input_string[3]))  return false;
+    if (input_string[4] != '.')     return false; 
+    if (!isdigit(input_string[5]))  return false; 
+    if (!isdigit(input_string[6]))  return false;
+    if (input_string[7] != '.')     return false; 
+    if (!isdigit(input_string[8]))  return false; 
+    if (!isdigit(input_string[9]))  return false;
+    return true;
 }

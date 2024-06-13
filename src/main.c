@@ -33,7 +33,7 @@ int main(void)
 {
     // Initial text.
     printf("CDbBirthday v1.1.0\n");
-    printf("By OperaVaria\n");
+    printf("By OperaVaria\n\n");
 
     /* Check if db file and correct table exists.
     If not, create it. */

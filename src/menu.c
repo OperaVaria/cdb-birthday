@@ -98,25 +98,28 @@ void main_switch(int sel_opt)
         break;
 
     case 7:
+        // Exit.
         printf("Exiting...\n\n");
         loop_active = false;
         break;
 
     default:
+        // Invalid selection.
         printf("Invalid option, try again!\n");
         break;
     }
 
-    // Print messages after operations:
-
-    if (between(sel_opt, 1, 2))
-    {
-        printf("Completed.\n");
-    }
-
+    // Press return prompt.
     if (between(sel_opt, 1, 6))
     {
-        printf("Returning to main menu...\n");
+        // Faux fgets prompt.
+        char *ent_buff = fgets_prompt("Press ENTER to continue.", 5);
+
+        // Free memory.
+        free(ent_buff);
+
+        // Return message.
+        printf("\nReturning to main menu...\n");
     }
 
     // Free memory.

@@ -9,6 +9,7 @@ Part of the CDbBirthday project by OperaVaria.
 */
 
 // Header files:
+// #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -21,11 +22,17 @@ Part of the CDbBirthday project by OperaVaria.
 // Add to database setup:
 char *add_setup(char *sql_statement)
 {
-    // Prompt for information, create variables.
+    // Prompt for name information, create variables.
     char *nickname = fgets_prompt("Nickname? ", 25);
     char *first_name = fgets_prompt("First name? ", 25);
     char *last_name = fgets_prompt("Last name? ", 25);
     char *birth_date = fgets_prompt("Date of birth (yyyy.mm.dd format): ", 11);
+
+    // Validate proper date format.
+    while (!(validate_date_form(birth_date)))
+    {   
+        birth_date = fgets_prompt("Incorrect format, please use yyyy.mm.dd: ", 11);
+    } 
 
     // Create SQL statement.
     snprintf(sql_statement, MAX_LENGTH,
@@ -76,7 +83,7 @@ char *check_entry_setup(char *sql_statement)
     free(nickname);
 
     // Print notification.
-    printf("\nChecking item...\n");
+    printf("\nChecking item...\n\n");
 
     // Return SQL statement.
     return sql_statement;
@@ -102,11 +109,11 @@ char *check_date_setup(char *sql_statement, char date_spec[])
              "SELECT * FROM birthdays WHERE birth_date LIKE '%%%s%%';", form_date);
 
     // Print notification based on call type.
-    if (date_spec == DAY)
+    if (strcmp(date_spec, DAY) == 0)
     {
         printf("Listing birthdays for today...\n\n");
     }
-    else if (date_spec == MONTH)
+    else
     {
         // Get current month name.
         strftime(month_name, 10, "%B", tm_info);
@@ -141,6 +148,9 @@ void create_table(void)
                              "'first_name'	TEXT, "
                              "'last_name'	TEXT, "
                              "'birth_date'	TEXT)";
+    
+    // Print notification.
+    printf("Checking Database...\n");
 
     // Call DB operation function.
     db_op(table_structure, CREATE);
