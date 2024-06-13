@@ -1,27 +1,32 @@
-# Detect OS (Windows, Linux, Mac) and set the appropriate variables:
-ifeq ($(OS),Windows_NT)
-    OUT_FILE := cdb_birthday.exe
-else
-    UNAME_S := $(shell uname -s)
-    ifeq ($(UNAME_S),Linux)
-        OUT_FILE := cdb_birthday
-    endif
-    ifeq ($(UNAME_S),Darwin)
-        OUT_FILE := cdb_birthday
-    endif
-endif
-
+# Makefile for the "CDbBirthday" project
 
 # Compiler.
 CC := gcc
 
 # Folder paths.
 INC_PATH := ./include
-OBJ_PATH := ./obj
 SRC_PATH := ./src
 
 #Flags.
 CFLAGS=-I$(INC_PATH)
+
+# OS dependent variables:
+ifeq ($(OS),Windows_NT)
+	OBJ_PATH := ./obj/win
+    OUT_FILE := cdb_birthday.exe	
+else
+    UNAME_S := $(shell uname -s)
+    ifeq ($(UNAME_S),Linux)
+		OBJ_PATH := ./obj/lnx
+        OUT_FILE := cdb_birthday
+    endif
+    ifeq ($(UNAME_S),Darwin)
+		OBJ_PATH := ./obj/mac
+        OUT_FILE := cdb_birthday
+    endif
+endif
+
+
 
 all: final
 
