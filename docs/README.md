@@ -1,9 +1,10 @@
 # CDbBirthday
 
 A simple, lightweight command line application, written in C, to store
-birthday information in an SQLite database. Database entries can be easily stored, viewed, and removed—birthdays for the current date can be checked as well.
+birthday information in an SQLite database. With it, database entries
+can be easily stored, viewed, or removed.
 
-The program is built mainly as a programming exercise and showcase.
+The app is built mainly as a programming exercise and showcase.
 
 The project uses the SQLite C/C++ interface, it's amalgamation file is attached
 for easier compilation. The SQLite code **[is in the public domain](https://sqlite.org/copyright.html)**.
