@@ -1,14 +1,8 @@
 # Makefile for the "CDbBirthday" project
 
-# Compiler.
+# Compiler variables.
 CC := gcc
-
-# Folder paths.
-INC_PATH := ./include
-SRC_PATH := ./src
-
-#Flags.
-CFLAGS=-I$(INC_PATH)
+CFLAGS=-I$(INC_DIR)
 
 # OS dependent variables:
 ifeq ($(OS),Windows_NT)
@@ -26,45 +20,54 @@ else
     endif
 endif
 
+# Path variables.
+INC_DIR := ./include
+SRC_DIR := ./src
+OFILES := $(OBJ_PATH)/auxfunc.o $(OBJ_PATH)/dbop.o $(OBJ_PATH)/dbsetup.o $(OBJ_PATH)/main.o $(OBJ_PATH)/menu.o $(OBJ_PATH)/sqlite3.o
 
-
+# Make all.
 all: final
 
-# Compiling .o files:
+# Compiling .o files with messages:
 
-$(OBJ_PATH)/auxfunc.o: $(SRC_PATH)/auxfunc.c
-	@echo "Compiling auxiliary functions object file."
-	@$(CC) $(CFLAGS) -c $(SRC_PATH)/auxfunc.c -o $(OBJ_PATH)/auxfunc.o
+$(OBJ_PATH)/auxfunc.o: $(SRC_DIR)/auxfunc.c
+	$(info Compiling auxiliary functions object file.)
+	@$(CC) $(CFLAGS) -c $(SRC_DIR)/auxfunc.c -o $(OBJ_PATH)/auxfunc.o
 
-$(OBJ_PATH)/dbop.o: $(SRC_PATH)/dbop.c
-	@echo "Compiling database operations object file."
-	@$(CC) $(CFLAGS) -c $(SRC_PATH)/dbop.c -o $(OBJ_PATH)/dbop.o
+$(OBJ_PATH)/dbop.o: $(SRC_DIR)/dbop.c
+	$(info Compiling database operations object file.)
+	@$(CC) $(CFLAGS) -c $(SRC_DIR)/dbop.c -o $(OBJ_PATH)/dbop.o
 
-$(OBJ_PATH)/dbsetup.o: $(SRC_PATH)/dbsetup.c
-	@echo "Compiling database setup object file."
-	@$(CC) $(CFLAGS) -c $(SRC_PATH)/dbsetup.c -o $(OBJ_PATH)/dbsetup.o
+$(OBJ_PATH)/dbsetup.o: $(SRC_DIR)/dbsetup.c
+	$(info Compiling database setup object file.)
+	@$(CC) $(CFLAGS) -c $(SRC_DIR)/dbsetup.c -o $(OBJ_PATH)/dbsetup.o
 
-$(OBJ_PATH)/main.o: $(SRC_PATH)/main.c
-	@echo "Compiling main object file."
-	@$(CC) $(CFLAGS) -c $(SRC_PATH)/main.c -o $(OBJ_PATH)/main.o
+$(OBJ_PATH)/main.o: $(SRC_DIR)/main.c
+	$(info Compiling main function object file.)
+	@$(CC) $(CFLAGS) -c $(SRC_DIR)/main.c -o $(OBJ_PATH)/main.o
 
-$(OBJ_PATH)/menu.o: $(SRC_PATH)/menu.c
-	@echo "Compiling menu object file."
-	@$(CC) $(CFLAGS) -c $(SRC_PATH)/menu.c -o $(OBJ_PATH)/menu.o
+$(OBJ_PATH)/menu.o: $(SRC_DIR)/menu.c
+	$(info Compiling menu object file.)
+	@$(CC) $(CFLAGS) -c $(SRC_DIR)/menu.c -o $(OBJ_PATH)/menu.o
 
-$(OBJ_PATH)/sqlite3.o: $(SRC_PATH)/sqlite3.c
-	@echo "Compiling sqlite object file."
-	@$(CC) $(CFLAGS) -c $(SRC_PATH)/sqlite3.c -o $(OBJ_PATH)/sqlite3.o
+$(OBJ_PATH)/sqlite3.o: $(SRC_DIR)/sqlite3.c
+	$(info Compiling sqlite object file.)
+	@$(CC) $(CFLAGS) -c $(SRC_DIR)/sqlite3.c -o $(OBJ_PATH)/sqlite3.o
 
-# Linking:
+# Final linking:
 
-final: $(OBJ_PATH)/auxfunc.o $(OBJ_PATH)/dbop.o $(OBJ_PATH)/dbsetup.o $(OBJ_PATH)/main.o $(OBJ_PATH)/menu.o $(OBJ_PATH)/sqlite3.o
-	@echo "Checking prerequisite files."
-	@echo "Linking and producing executable."
-	@$(CC) $(CFLAGS) $(OBJ_PATH)/auxfunc.o $(OBJ_PATH)/dbop.o $(OBJ_PATH)/dbsetup.o $(OBJ_PATH)/main.o $(OBJ_PATH)/menu.o $(OBJ_PATH)/sqlite3.o -o $(OUT_FILE)
+final: $(OFILES)
+	$(info Linking and producing executable.)
+	@$(CC) $(CFLAGS) $(OFILES) -o $(OUT_FILE)
 
 # Clean:
 
 clean: 
-	@echo "Removing object files."
-	@rm $(OBJ_PATH)/*
+	$(info Removing object files.)
+	@$(RM) $(OBJ_PATH)/*.o
+
+bincl:	
+	$(info Removing binary.)
+	@$(RM) $(OUT_FILE)
+
+allcl: clean bincl
