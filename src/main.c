@@ -23,6 +23,10 @@ see <https://www.gnu.org/licenses/>
 #include <stdio.h>
 #include "dbsetup.h"
 #include "menu.h"
+// On Windows: include windows.h.
+#ifdef _WIN32
+    #include <windows.h>
+#endif
 
 // Global variables:
 int callb_called = 0;    // SQL callback function call counter.
@@ -30,7 +34,13 @@ bool loop_active = true; // Boolean to keep main loop active.
 
 // Main function:
 int main(void)
-{
+{   
+    // On Windows: set console to Unicode.
+    #ifdef _WIN32
+        SetConsoleCP(65001);
+        SetConsoleOutputCP(65001);
+    #endif
+
     // Initial text.
     printf("CDbBirthday v1.2.0\n");
     printf("By OperaVaria\n\n");
