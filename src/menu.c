@@ -20,9 +20,12 @@ Part of the CDbBirthday project by OperaVaria.
 
 // Main option menu:
 int select_menu(void)
-{
-    // Default user option value.
-    int user_opt = 0;
+{   
+    // Declare input buffer array.
+    char buffer[5];
+
+    // Initialize default user option value.
+    int user_opt = 0;    
 
     // Menu text.
     printf("\nSelect option:\n");
@@ -35,9 +38,9 @@ int select_menu(void)
     printf("7) Exit.\n\n");
 
     // Get user input.
-    char *buffer = fgets_prompt("Enter your choice (1-7): ", 5);
-    sscanf(buffer, "%d", &user_opt);
-    free(buffer);
+    printf("Enter your choice (1-7): ");
+    char *raw_input = get_input(buffer, 5, stdin);
+    sscanf(raw_input, "%d", &user_opt);
 
     // Print newline.
     printf("\n");

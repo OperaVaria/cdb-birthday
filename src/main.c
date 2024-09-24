@@ -1,6 +1,6 @@
 /*
 
-CDbBirthday v1.2.0
+CDbBirthday v1.3.0
 By OperaVaria, 2024
 
 A simple, lightweight command line application, written in C, to store
@@ -42,7 +42,7 @@ int main(void)
     #endif
 
     // Initial text.
-    printf("CDbBirthday v1.2.0\n");
+    printf("CDbBirthday v1.3.0\n");
     printf("By OperaVaria\n\n");
 
     /* Check if db file and correct table exists.
