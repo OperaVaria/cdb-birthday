@@ -15,7 +15,8 @@ Part of the CDbBirthday project by OperaVaria.
 // Header files.
 #include "macros.h"
 
-typedef struct Person {
+typedef struct Person
+{
     char nickname[BUFFER_LENGTH];
     char first_name[BUFFER_LENGTH];
     char last_name[BUFFER_LENGTH];

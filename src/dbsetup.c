@@ -36,9 +36,9 @@ void add_setup(Person *struct_ptr)
     // Validate proper date format.
     while (!(validate_date_form(struct_ptr->birth_date)))
     {
-        printf("Incorrect format, please use yyyy.mm.dd: "); 
+        printf("Incorrect format, please use yyyy.mm.dd: ");
         get_input(struct_ptr->birth_date, DATE_LENGTH, stdin);
-    } 
+    }
 
     // Create SQL statement.
     snprintf(struct_ptr->sql_stm, SQL_LENGTH,
@@ -59,7 +59,7 @@ void del_setup(Person *struct_ptr)
     // Create SQL statement.
     snprintf(struct_ptr->sql_stm, SQL_LENGTH,
              "DELETE from birthdays WHERE nickname = '%s';", struct_ptr->nickname);
-    
+
     // Print notification.
     printf("\nRemoving item...\n");
 }
@@ -132,7 +132,7 @@ void create_table(void)
                              "'first_name'	TEXT, "
                              "'last_name'	TEXT, "
                              "'birth_date'	TEXT)";
-    
+
     // Print notification.
     printf("Checking Database...\n");
 

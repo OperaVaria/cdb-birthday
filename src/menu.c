@@ -21,10 +21,10 @@ Part of the CDbBirthday project by OperaVaria.
 
 // Main option menu:
 int select_menu(void)
-{   
+{
     // Declare variables.
     char buffer[5];
-    int user_opt = 0;    
+    int user_opt = 0;
 
     // Menu text.
     printf("\nSelect option:\n");
@@ -116,5 +116,4 @@ void main_switch(int sel_opt)
         // Return message.
         printf("\nReturning to main menu...\n");
     }
-
 }
