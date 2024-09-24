@@ -19,8 +19,10 @@ Part of the CDbBirthday project by OperaVaria.
 #define DELETE 3
 #define SELECT 4
 
-// SQL statement max length.
-#define MAX_LENGTH 256
+// Array lengths.
+#define BUFFER_LENGTH 64
+#define DATE_LENGTH 11
+#define SQL_LENGTH 512
 
 // Date specifier constants.
 #define MONTH ".%m."

@@ -17,14 +17,13 @@ Part of the CDbBirthday project by OperaVaria.
 #include "dbsetup.h"
 #include "macros.h"
 #include "menu.h"
+#include "types.h"
 
 // Main option menu:
 int select_menu(void)
 {   
-    // Declare input buffer array.
+    // Declare variables.
     char buffer[5];
-
-    // Initialize default user option value.
     int user_opt = 0;    
 
     // Menu text.
@@ -52,52 +51,46 @@ int select_menu(void)
 // Main switch:
 void main_switch(int sel_opt)
 {
-    // Declare SQL statement string, allocate memory.
-    char *sql_statement;
-    sql_statement = malloc(sizeof(char) * MAX_LENGTH);
-    if (sql_statement == NULL)
-    {
-        fprintf(stderr, "Memory allocation failed.\n");
-        exit(EXIT_FAILURE);
-    }
+    // Create Person struct instance.
+    Person p1;
 
     // Call functions based on selected menu option.
     switch (sel_opt)
     {
     case 1:
         // Add.
-        sql_statement = add_setup(sql_statement);
-        db_op(sql_statement, INSERT);
+        add_setup(&p1);
+        db_op(p1.sql_stm, INSERT);
         break;
 
     case 2:
         // Delete.
-        sql_statement = del_setup(sql_statement);
-        db_op(sql_statement, DELETE);
+        del_setup(&p1);
+        db_op(p1.sql_stm, DELETE);
         break;
 
     case 3:
         // Check single entry.
-        sql_statement = check_entry_setup(sql_statement);
-        db_op(sql_statement, SELECT);
+        check_entry_setup(&p1);
+        db_op(p1.sql_stm, SELECT);
         break;
 
     case 4:
         // Check current month.
-        sql_statement = check_date_setup(sql_statement, MONTH);
-        db_op(sql_statement, SELECT);
+        check_date_setup(&p1, MONTH);
+        db_op(p1.sql_stm, SELECT);
         break;
 
     case 5:
         // Check current day.
-        sql_statement = check_date_setup(sql_statement, DAY);
-        db_op(sql_statement, SELECT);
+        check_date_setup(&p1, DAY);
+        db_op(p1.sql_stm, SELECT);
         break;
 
     case 6:
         // List all.
-        sql_statement = list_all_setup(sql_statement);
-        db_op(sql_statement, SELECT);
+        list_all_setup(&p1);
+        db_op(p1.sql_stm, SELECT);
         break;
 
     case 7:
@@ -115,16 +108,13 @@ void main_switch(int sel_opt)
     // Press return prompt.
     if (between(sel_opt, 1, 6))
     {
-        // Faux fgets prompt.
-        char *ent_buff = fgets_prompt("Press ENTER to continue.", 5);
-
-        // Free memory.
-        free(ent_buff);
+        // Faux prompt.
+        char ent_buff[5];
+        printf("Press ENTER to continue.");
+        get_input(ent_buff, 5, stdin);
 
         // Return message.
         printf("\nReturning to main menu...\n");
     }
 
-    // Free memory.
-    free(sql_statement);
 }

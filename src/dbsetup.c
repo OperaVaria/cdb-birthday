@@ -18,84 +18,74 @@ Part of the CDbBirthday project by OperaVaria.
 #include "dbop.h"
 #include "dbsetup.h"
 #include "macros.h"
+#include "types.h"
 
 // Add to database setup:
-char *add_setup(char *sql_statement)
+void add_setup(Person *struct_ptr)
 {
-    // Prompt for name information, create variables.
-    char *nickname = fgets_prompt("Nickname? ", 25);
-    char *first_name = fgets_prompt("First name? ", 25);
-    char *last_name = fgets_prompt("Last name? ", 25);
-    char *birth_date = fgets_prompt("Date of birth (yyyy.mm.dd format): ", 11);
+    // Prompt for name information, fill struct arrays.
+    printf("Nickname? ");
+    get_input(struct_ptr->nickname, BUFFER_LENGTH, stdin);
+    printf("First name? ");
+    get_input(struct_ptr->first_name, BUFFER_LENGTH, stdin);
+    printf("Last name? ");
+    get_input(struct_ptr->last_name, BUFFER_LENGTH, stdin);
+    printf("Date of birth (yyyy.mm.dd format): ");
+    get_input(struct_ptr->birth_date, DATE_LENGTH, stdin);
 
     // Validate proper date format.
-    while (!(validate_date_form(birth_date)))
-    {   
-        birth_date = fgets_prompt("Incorrect format, please use yyyy.mm.dd: ", 11);
+    while (!(validate_date_form(struct_ptr->birth_date)))
+    {
+        printf("Incorrect format, please use yyyy.mm.dd: "); 
+        get_input(struct_ptr->birth_date, DATE_LENGTH, stdin);
     } 
 
     // Create SQL statement.
-    snprintf(sql_statement, MAX_LENGTH,
+    snprintf(struct_ptr->sql_stm, SQL_LENGTH,
              "INSERT INTO birthdays (nickname, first_name, last_name, birth_date) VALUES ('%s', '%s', '%s', '%s');",
-             nickname, first_name, last_name, birth_date);
-
-    // Free memory.
-    free(nickname); free(first_name); free(last_name); free(birth_date);
+             struct_ptr->nickname, struct_ptr->first_name, struct_ptr->last_name, struct_ptr->birth_date);
 
     // Print notification.
     printf("\nAdding item...\n");
-
-    // Return SQL statement.
-    return sql_statement;
 }
 
 // Delete item from database setup:
-char *del_setup(char *sql_statement)
+void del_setup(Person *struct_ptr)
 {
     // Prompt for information, create variables.
-    char *nickname = fgets_prompt("Nickname? ", 25);
+    printf("Nickname? ");
+    get_input(struct_ptr->nickname, BUFFER_LENGTH, stdin);
 
     // Create SQL statement.
-    snprintf(sql_statement, MAX_LENGTH,
-             "DELETE from birthdays WHERE nickname = '%s';", nickname);
-
-    // Free memory.
-    free(nickname);
-
+    snprintf(struct_ptr->sql_stm, SQL_LENGTH,
+             "DELETE from birthdays WHERE nickname = '%s';", struct_ptr->nickname);
+    
     // Print notification.
     printf("\nRemoving item...\n");
-
-    // Return SQL statement.
-    return sql_statement;
 }
 
 // Check if single entry exist.
-char *check_entry_setup(char *sql_statement)
+void check_entry_setup(Person *struct_ptr)
 {
     // Prompt for information, create variables.
-    char *nickname = fgets_prompt("Nickname? ", 25);
+    printf("Nickname? ");
+    get_input(struct_ptr->nickname, BUFFER_LENGTH, stdin);
 
     // Create SQL statement.
-    snprintf(sql_statement, MAX_LENGTH,
-             "SELECT * from birthdays WHERE nickname = '%s';", nickname);
-
-    // Free memory.
-    free(nickname);
+    snprintf(struct_ptr->sql_stm, SQL_LENGTH,
+             "SELECT * from birthdays WHERE nickname = '%s';", struct_ptr->nickname);
 
     // Print notification.
     printf("\nChecking item...\n\n");
-
-    // Return SQL statement.
-    return sql_statement;
 }
 
-// Check certain date's birthdays setup:
-char *check_date_setup(char *sql_statement, char date_spec[])
+// Check a certain date setup:
+void check_date_setup(Person *struct_ptr, char date_spec[])
 {
     // Declare variables.
     time_t timer;
     struct tm *tm_info;
-    char form_date[11], month_name[10];
+    char form_date[DATE_LENGTH], month_name[10];
 
     // Get date.
     timer = time(NULL);
@@ -105,15 +95,15 @@ char *check_date_setup(char *sql_statement, char date_spec[])
     strftime(form_date, 10, date_spec, tm_info);
 
     // Create SQL statement.
-    snprintf(sql_statement, MAX_LENGTH,
+    snprintf(struct_ptr->sql_stm, SQL_LENGTH,
              "SELECT * FROM birthdays WHERE birth_date LIKE '%%%s%%';", form_date);
 
     // Print notification based on call type.
-    if (strcmp(date_spec, DAY) == 0)
+    if (strcmp(date_spec, DAY) == 0) // DAY
     {
         printf("Listing birthdays for today...\n\n");
     }
-    else
+    else // MONTH
     {
         // Get current month name.
         strftime(month_name, 10, "%B", tm_info);
@@ -121,22 +111,16 @@ char *check_date_setup(char *sql_statement, char date_spec[])
         // Print.
         printf("Listing birthdays for the month %s...\n\n", month_name);
     }
-
-    // Return SQL statement.
-    return sql_statement;
 }
 
 // List all items setup:
-char *list_all_setup(char *sql_statement)
+void list_all_setup(Person *struct_ptr)
 {
     // Create SQL statement.
-    strcpy(sql_statement, "SELECT * FROM birthdays");
+    strcpy(struct_ptr->sql_stm, "SELECT * FROM birthdays");
 
     // Print notification.
     printf("Listing all items...\n\n");
-
-    // Return SQL statement.
-    return sql_statement;
 }
 
 // Create "birthdays" table if it does not exits:

@@ -12,12 +12,15 @@ Part of the CDbBirthday project by OperaVaria.
 #ifndef DBSETUP_H
 #define DBSETUP_H
 
+// Header files.
+#include "types.h"
+
 // Function prototypes.
-char *add_setup(char *sql_statement);
-char *del_setup(char *sql_statement);
-char *check_entry_setup(char *sql_statement);
-char *check_date_setup(char *sql_statement, char date_spec[]);
-char *list_all_setup(char *sql_statement);
+void add_setup(Person *struct_ptr);
+void del_setup(Person *struct_ptr);
+void check_entry_setup(Person *struct_ptr);
+void check_date_setup(Person *struct_ptr, char date_spec[]);
+void list_all_setup(Person *struct_ptr);
 void create_table(void);
 
 #endif
