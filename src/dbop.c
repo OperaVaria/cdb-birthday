@@ -18,6 +18,9 @@ Part of the CDbBirthday project by OperaVaria.
 // Static callback function prototype.
 static int sql_callback(void *data, int argc, char **argv, char **azColName);
 
+// Callback function call counter.
+int callb_called = 0;
+
 // Database operation function:
 void db_op(char *sql_statement, int call_type)
 {

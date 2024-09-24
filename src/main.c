@@ -28,9 +28,8 @@ see <https://www.gnu.org/licenses/>
     #include <windows.h>
 #endif
 
-// Global variables:
-int callb_called = 0;    // SQL callback function call counter.
-bool loop_active = true; // Boolean to keep main loop active.
+// Global boolean to keep the main loop active
+bool loop_active = true;
 
 // Main function:
 int main(void)
