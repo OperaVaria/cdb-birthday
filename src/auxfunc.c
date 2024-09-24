@@ -31,7 +31,7 @@ char *get_input(char *output_str, int arr_length, FILE *input_stream)
         // If arr_length too short: error message, clear input buffer.
         if (l == i)
         {
-            fprintf(stderr, "Warning: array not large enough to store data. String truncated.\n");
+            fprintf(stderr, "Warning: input too long. String truncated.\n");
             while ((ch = getchar()) != '\n' && ch != EOF) { }
             break;
         }

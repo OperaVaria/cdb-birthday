@@ -23,7 +23,7 @@ Part of the CDbBirthday project by OperaVaria.
 int select_menu(void)
 {
     // Declare variables.
-    char buffer[5];
+    char buffer[10];
     int user_opt = 0;
 
     // Menu text.
@@ -38,7 +38,7 @@ int select_menu(void)
 
     // Get user input.
     printf("Enter your choice (1-7): ");
-    char *raw_input = get_input(buffer, 5, stdin);
+    char *raw_input = get_input(buffer, 10, stdin);
     sscanf(raw_input, "%d", &user_opt);
 
     // Print newline.

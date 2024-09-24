@@ -33,7 +33,7 @@ int main(void)
     assert(strlen("🌍") == 4);
 
 
-    // Print accented characters:
+    // Print accented and special characters:
     char acc_str[] = "Test string: áéó ÁÉÓ αβγ ΑΒΓ абг АБГ グケゲ 🌲🌳🌴\n";
     printf("%s", acc_str);
 }
