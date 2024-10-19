@@ -23,7 +23,7 @@ char *get_input(char *output_str, int arr_length, FILE *input_stream)
     // Declare variables.
     char ch;
     int i = 0;
-    int l = arr_length--;
+    int l = --arr_length;
 
     // Read and store input until newline or endfile character encountered.
     while ((ch = getc(input_stream)) != '\n' && ch != EOF)
