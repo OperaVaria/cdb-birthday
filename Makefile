@@ -23,7 +23,7 @@ endif
 # Path variables.
 INC_DIR := ./include
 SRC_DIR := ./src
-OFILES := $(OBJ_PATH)/auxfunc.o $(OBJ_PATH)/dbop.o $(OBJ_PATH)/dbsetup.o $(OBJ_PATH)/main.o $(OBJ_PATH)/menu.o $(OBJ_PATH)/sqlite3.o
+OFILES := $(OBJ_PATH)/auxfunc.o $(OBJ_PATH)/date.o $(OBJ_PATH)/dbop.o $(OBJ_PATH)/dbsetup.o $(OBJ_PATH)/main.o $(OBJ_PATH)/menu.o $(OBJ_PATH)/sqlite3.o
 
 # Make all.
 all: final
@@ -33,6 +33,10 @@ all: final
 $(OBJ_PATH)/auxfunc.o: $(SRC_DIR)/auxfunc.c
 	$(info Compiling auxiliary functions object file.)
 	@$(CC) $(CFLAGS) -c $(SRC_DIR)/auxfunc.c -o $(OBJ_PATH)/auxfunc.o
+
+$(OBJ_PATH)/date.o: $(SRC_DIR)/date.c
+	$(info Compiling date validation object file.)
+	@$(CC) $(CFLAGS) -c $(SRC_DIR)/date.c -o $(OBJ_PATH)/date.o
 
 $(OBJ_PATH)/dbop.o: $(SRC_DIR)/dbop.c
 	$(info Compiling database operations object file.)

@@ -15,6 +15,7 @@ Part of the CDbBirthday project by OperaVaria.
 #include <string.h>
 #include <time.h>
 #include "auxfunc.h"
+#include "date.h"
 #include "dbop.h"
 #include "dbsetup.h"
 #include "macros.h"
@@ -30,13 +31,13 @@ void add_setup(Person *struct_ptr)
     get_input(struct_ptr->first_name, BUFFER_LENGTH, stdin);
     printf("Last name? ");
     get_input(struct_ptr->last_name, BUFFER_LENGTH, stdin);
-    printf("Date of birth (yyyy.mm.dd format): ");
+    printf("Date of birth (YYYY.MM.DD format): ");
     get_input(struct_ptr->birth_date, DATE_LENGTH, stdin);
 
     // Validate proper date format.
-    while (!(validate_date_form(struct_ptr->birth_date)))
+    while (!(validate_date(struct_ptr->birth_date)))
     {
-        printf("Incorrect format, please use yyyy.mm.dd: ");
+        printf("Please try again: ");
         get_input(struct_ptr->birth_date, DATE_LENGTH, stdin);
     }
 
