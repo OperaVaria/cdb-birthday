@@ -37,6 +37,7 @@ void db_op(char *sql_statement, int call_type)
     if (rc)
     {
         fprintf(stderr, "Cannot open database. Error message = %s\n\n", sqlite3_errmsg(db));
+        sqlite3_free(sql_err_msg);
         return;
     }
 
