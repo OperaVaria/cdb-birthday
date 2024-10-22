@@ -11,10 +11,9 @@ Part of the CDbBirthday project by OperaVaria.
 // Header files:
 #include <stdbool.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include "auxfunc.h"
 #include "dbop.h"
 #include "dbsetup.h"
+#include "input.h"
 #include "macros.h"
 #include "menu.h"
 #include "types.h"
@@ -22,10 +21,6 @@ Part of the CDbBirthday project by OperaVaria.
 // Main option menu:
 int select_menu(void)
 {
-    // Declare variables.
-    char buffer[10];
-    int user_opt = 0;
-
     // Menu text.
     printf("\nSelect option:\n");
     printf("1) Add a birthday entry.\n");
@@ -36,10 +31,8 @@ int select_menu(void)
     printf("6) List all birthday entries.\n");
     printf("7) Exit.\n\n");
 
-    // Get user input.
-    printf("Enter your choice (1-7): ");
-    char *raw_input = get_input(buffer, 10, stdin);
-    sscanf(raw_input, "%d", &user_opt);
+    // Prompt for selection.
+    int user_opt = get_int_prompt("Enter your choice (1-7): ");
 
     // Print newline.
     printf("\n");
@@ -110,8 +103,7 @@ void main_switch(int sel_opt)
     {
         // Faux prompt.
         char ent_buff[5];
-        printf("Press ENTER to continue.");
-        get_input(ent_buff, 5, stdin);
+        get_str_prompt("Press ENTER to continue.", ent_buff, 5);
 
         // Return message.
         printf("\nReturning to main menu...\n");

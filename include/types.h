@@ -15,6 +15,7 @@ Part of the CDbBirthday project by OperaVaria.
 // Header files.
 #include "macros.h"
 
+// Struc to store name and birthday data for a person.
 typedef struct Person
 {
     char nickname[BUFFER_LENGTH];

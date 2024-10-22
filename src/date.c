@@ -1,6 +1,6 @@
 /*
 
-auxfunc.c
+date.c
 
 Functions related to date validation.
 
@@ -21,7 +21,7 @@ static bool validate_date_form(const char *date_string);
 static bool validate_date_values(const char *date_string);
 static bool is_leap_year(int year);
 
-/* Main date validation function. Calls helper functions to determine if
+/* Main date validation function. Calls subfunctions to determine if
 a date is of a valid format and has correct values.
 Takes a date string as argument, returns validation boolean. */
 bool validate_date(const char *date_string)
@@ -85,17 +85,17 @@ static bool validate_date_values(const char *date_string)
     // Validate month.
     if (!(between(month, 1, 12)))
     {
-        fprintf(stderr, "Error: Month must be between 01 and 12\n");
+        fprintf(stderr, "Error: Month number must be between 01 and 12\n");
         return false;
     }
 
-    // Calculate days in month (28, 29, 30 or 31).
+    // Calculate days in month.
     switch (month)
     {
     case APRIL: case JUNE: case SEPTEMBER: case NOVEMBER:
         days_in_month = 30;
         break;
-    case FEBRUARY:
+    case FEBRUARY: // With leap year check.
         days_in_month = is_leap_year(year) ? 29 : 28;
         break;
     default: // January, March, May, July, August, October, December

@@ -9,78 +9,77 @@ Part of the CDbBirthday project by OperaVaria.
 */
 
 // Header files:
-// #include <stdbool.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include "auxfunc.h"
 #include "date.h"
 #include "dbop.h"
 #include "dbsetup.h"
+#include "input.h"
 #include "macros.h"
 #include "types.h"
+#include "sqlite3.h"
 
-// Add to database setup:
+/* Add to database setup.
+Prompts user for data, fills Person struct, prepares escaped SQL statement. */
 void add_setup(Person *struct_ptr)
 {
     // Prompt for name information, fill struct arrays.
-    printf("Nickname? ");
-    get_input(struct_ptr->nickname, BUFFER_LENGTH, stdin);
-    printf("First name? ");
-    get_input(struct_ptr->first_name, BUFFER_LENGTH, stdin);
-    printf("Last name? ");
-    get_input(struct_ptr->last_name, BUFFER_LENGTH, stdin);
-    printf("Date of birth (YYYY.MM.DD format): ");
-    get_input(struct_ptr->birth_date, DATE_LENGTH, stdin);
+    get_str_prompt("Nickname? ", struct_ptr->nickname, BUFFER_LENGTH);
+    get_str_prompt("First name? ", struct_ptr->first_name, BUFFER_LENGTH);
+    get_str_prompt("Last name? ", struct_ptr->last_name, BUFFER_LENGTH);
+    get_str_prompt("Date of birth (YYYY.MM.DD format): ", struct_ptr->birth_date, BUFFER_LENGTH);
 
     // Validate proper date format.
     while (!(validate_date(struct_ptr->birth_date)))
-    {
-        printf("Please try again: ");
-        get_input(struct_ptr->birth_date, DATE_LENGTH, stdin);
+    {        
+        get_str_prompt("Please try again: ", struct_ptr->birth_date, BUFFER_LENGTH);
     }
 
-    // Create SQL statement.
-    snprintf(struct_ptr->sql_stm, SQL_LENGTH,
-             "INSERT INTO birthdays (nickname, first_name, last_name, birth_date) VALUES ('%s', '%s', '%s', '%s');",
+    // Create escaped SQL statement.
+    sqlite3_snprintf(SQL_LENGTH, struct_ptr->sql_stm, 
+             "INSERT INTO birthdays (nickname, first_name, last_name, birth_date) VALUES (%Q, %Q, %Q, %Q);",
              struct_ptr->nickname, struct_ptr->first_name, struct_ptr->last_name, struct_ptr->birth_date);
 
     // Print notification.
     printf("\nAdding item...\n");
 }
 
-// Delete item from database setup:
+/* Delete item from database setup.
+Prompts user for data, fills Person struct, prepares escaped SQL statement. */
 void del_setup(Person *struct_ptr)
 {
     // Prompt for information, create variables.
-    printf("Nickname? ");
-    get_input(struct_ptr->nickname, BUFFER_LENGTH, stdin);
+    get_str_prompt("Nickname? ", struct_ptr->nickname, BUFFER_LENGTH);
 
-    // Create SQL statement.
-    snprintf(struct_ptr->sql_stm, SQL_LENGTH,
-             "DELETE from birthdays WHERE nickname = '%s';", struct_ptr->nickname);
+    // Create escaped SQL statement.
+    sqlite3_snprintf(SQL_LENGTH, struct_ptr->sql_stm,
+             "DELETE from birthdays WHERE nickname = %Q;", struct_ptr->nickname);
 
     // Print notification.
     printf("\nRemoving item...\n");
 }
 
-// Check if single entry exist.
+/* Check if single entry exist.
+Prompts user for data, fills Person struct, prepares escaped SQL statement. */
 void check_entry_setup(Person *struct_ptr)
 {
     // Prompt for information, create variables.
-    printf("Nickname? ");
-    get_input(struct_ptr->nickname, BUFFER_LENGTH, stdin);
+    get_str_prompt("Nickname? ", struct_ptr->nickname, BUFFER_LENGTH);
 
-    // Create SQL statement.
-    snprintf(struct_ptr->sql_stm, SQL_LENGTH,
-             "SELECT * from birthdays WHERE nickname = '%s';", struct_ptr->nickname);
+    // Create escaped SQL statement.
+    sqlite3_snprintf(SQL_LENGTH, struct_ptr->sql_stm,
+             "SELECT * from birthdays WHERE nickname = %Q;", struct_ptr->nickname);
 
     // Print notification.
     printf("\nChecking item...\n\n");
 }
 
-// Check a certain date setup:
+/* Prepares an SQL statement to check a birthday on the current day
+or in the current month. Takes a Person struct and a date specifier string as
+arguments. */
 void check_date_setup(Person *struct_ptr, char date_spec[])
 {
     // Declare variables.
@@ -95,16 +94,16 @@ void check_date_setup(Person *struct_ptr, char date_spec[])
     // Format date.
     strftime(form_date, 10, date_spec, tm_info);
 
-    // Create SQL statement.
-    snprintf(struct_ptr->sql_stm, SQL_LENGTH,
-             "SELECT * FROM birthdays WHERE birth_date LIKE '%%%s%%';", form_date);
+    // Create escaped SQL statement.
+    sqlite3_snprintf(SQL_LENGTH, struct_ptr->sql_stm,
+             "SELECT * FROM birthdays WHERE birth_date LIKE '%%%q%%';", form_date);
 
-    // Print notification based on call type.
-    if (strcmp(date_spec, DAY) == 0) // DAY
+    // Print notification based on call type (day or month).
+    if (strcmp(date_spec, DAY) == 0)
     {
         printf("Listing birthdays for today...\n\n");
     }
-    else // MONTH
+    else
     {
         // Get current month name.
         strftime(month_name, 10, "%B", tm_info);
@@ -114,10 +113,10 @@ void check_date_setup(Person *struct_ptr, char date_spec[])
     }
 }
 
-// List all items setup:
+// Prepares SQL statement to list all birthday entries.
 void list_all_setup(Person *struct_ptr)
 {
-    // Create SQL statement.
+    // Create escaped SQL statement.
     strcpy(struct_ptr->sql_stm, "SELECT * FROM birthdays");
 
     // Print notification.

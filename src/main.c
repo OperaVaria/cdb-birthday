@@ -1,10 +1,13 @@
 /*
 
-CDbBirthday v1.3.0
-By OperaVaria, 2024
+CDbBirthday v1.4.0
+2024/10/22
+By OperaVaria
 
 A simple, lightweight command line application, written in C, to store
 birthday information in an SQLite database.
+
+License:
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
 License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
@@ -41,7 +44,7 @@ int main(void)
     #endif
 
     // Initial text.
-    printf("CDbBirthday v1.3.0\n");
+    printf("CDbBirthday v1.4.0\n");
     printf("By OperaVaria\n\n");
 
     /* Check if db file and correct table exists.
