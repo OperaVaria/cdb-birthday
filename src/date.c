@@ -11,7 +11,6 @@ Part of the CDbBirthday project by OperaVaria.
 // Header files.
 #include <ctype.h>
 #include <stdbool.h>
-#include <stdio.h>
 #include <string.h>
 #include "date.h"
 #include "macros.h"
@@ -27,13 +26,9 @@ Takes a date string as argument, returns validation boolean. */
 bool validate_date(const char *date_string)
 {
     // Call functions. If any false: early false return.
-    if (!validate_date_form(date_string)) {
-        return false;
-    }
-    if (!validate_date_values(date_string)) {
-        return false;
-    }
-    
+    if (!validate_date_form(date_string)) {return false;}
+    if (!validate_date_values(date_string)) {return false;}
+
     // Else (all true): return true.
     return true;
 }
@@ -75,7 +70,7 @@ static bool validate_date_form(const char *date_string)
 date in the Gregorian calendar. Takes a date string as argument,
 returns validation boolean.*/
 static bool validate_date_values(const char *date_string)
-{   
+{
     // Declare variables.
     int year, month, day, days_in_month;
 
@@ -85,7 +80,7 @@ static bool validate_date_values(const char *date_string)
     // Validate month.
     if (!(between(month, 1, 12)))
     {
-        fprintf(stderr, "Error: Month number must be between 01 and 12\n");
+        fprintf(stderr, "Error: Month number must be between 01 and 12.\n");
         return false;
     }
 

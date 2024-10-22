@@ -12,6 +12,9 @@ Part of the CDbBirthday project by OperaVaria.
 #ifndef INPUT_H
 #define INPUT_H
 
+// Header files.
+#include <stdio.h>
+
 // Function prototypes.
 int get_input(char *output_arr, size_t arr_size, FILE *input_stream);
 int get_int_prompt(const char *prompt);

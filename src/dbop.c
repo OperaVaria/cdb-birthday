@@ -11,7 +11,6 @@ Part of the CDbBirthday project by OperaVaria.
 // Header files:
 #include <ctype.h>
 #include <stdbool.h>
-#include <stdio.h>
 #include <string.h>
 #include "dbop.h"
 #include "macros.h"

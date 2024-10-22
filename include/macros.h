@@ -12,6 +12,11 @@ Part of the CDbBirthday project by OperaVaria.
 #ifndef MACROS_H
 #define MACROS_H
 
+// Header files.
+#include <stdio.h>
+
+/* CONSTANTS */
+
 // SQL call type constants.
 #define CREATE 1
 #define INSERT 2
@@ -41,7 +46,12 @@ Part of the CDbBirthday project by OperaVaria.
 #define NOVEMBER 11
 #define DECEMBER 12
 
-// Function-like macros.
+/* FUNCTION-LIKE MACROS */
+
+// Is x value between two numbers.
 #define between(x, a, b) (((a) <= (x)) && ((x) <= (b)))
+
+// Screen clearing, uses ANSI escape codes.
+#define clrscr() printf("\e[1;1H\e[2J")
 
 #endif

@@ -9,7 +9,6 @@ Part of the CDbBirthday project by OperaVaria.
 */
 
 // Header files:
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "input.h"
@@ -19,8 +18,8 @@ Part of the CDbBirthday project by OperaVaria.
 a stream to a character array. Takes the output char array pointer,
 the size of the array, and the input stream as arguments. Returns status code. */
 int get_input(char *output_arr, size_t arr_size, FILE *input_stream)
-{   
-    // Initialize variables.    
+{
+    // Initialize variables.
     int i = 0, l = --arr_size;
     char ch;
 
@@ -42,7 +41,7 @@ int get_input(char *output_arr, size_t arr_size, FILE *input_stream)
             output_arr[i + 1] = '\0';
             i++;
         }
-    }   
+    }
 
     return 0;
 }
@@ -51,7 +50,7 @@ int get_input(char *output_arr, size_t arr_size, FILE *input_stream)
 Takes the prompt text as argument, returns input as int,
 or returns -1 if error encountered. Uses the custom get_input function. */
 int get_int_prompt(const char *prompt)
-{   
+{
     // Declare variables.
     char buffer[5];
     int get_input_status = 0, input_int = 0;
@@ -64,7 +63,7 @@ int get_int_prompt(const char *prompt)
     sscanf(buffer, "%d", &input_int);
 
     /* If error encountered in get_input function:
-    pass -1 as return value (invalid selection). */    
+    pass -1 as return value (invalid selection). */
     return (get_input_status == 0) ? input_int : -1;
 }
 
@@ -76,7 +75,8 @@ void get_str_prompt(const char *prompt, char *output_arr, size_t arr_size)
     printf(prompt);
 
     // Call get_input in a while loop till non overflown input is given:
-    while (get_input(output_arr, arr_size, stdin) != 0) {
-        printf("Try again: ");
+    while (get_input(output_arr, arr_size, stdin) != 0)
+    {
+        printf("Please try again: ");
     }
 }

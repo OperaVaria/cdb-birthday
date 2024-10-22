@@ -25,7 +25,7 @@ SRC_DIR := ./src
 OFILES := $(OBJ_PATH)/date.o $(OBJ_PATH)/dbop.o $(OBJ_PATH)/dbsetup.o $(OBJ_PATH)/input.o $(OBJ_PATH)/main.o $(OBJ_PATH)/menu.o $(OBJ_PATH)/sqlite3.o
 
 # Flags
-CFLAGS := -I$(INC_DIR) -O3
+CFLAGS := -O3 -I$(INC_DIR)
 
 # Make all.
 all: final

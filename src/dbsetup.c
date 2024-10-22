@@ -10,7 +10,6 @@ Part of the CDbBirthday project by OperaVaria.
 
 // Header files:
 #include <stdbool.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
@@ -34,12 +33,12 @@ void add_setup(Person *struct_ptr)
 
     // Validate proper date format.
     while (!(validate_date(struct_ptr->birth_date)))
-    {        
+    {
         get_str_prompt("Please try again: ", struct_ptr->birth_date, BUFFER_LENGTH);
     }
 
     // Create escaped SQL statement.
-    sqlite3_snprintf(SQL_LENGTH, struct_ptr->sql_stm, 
+    sqlite3_snprintf(SQL_LENGTH, struct_ptr->sql_stm,
              "INSERT INTO birthdays (nickname, first_name, last_name, birth_date) VALUES (%Q, %Q, %Q, %Q);",
              struct_ptr->nickname, struct_ptr->first_name, struct_ptr->last_name, struct_ptr->birth_date);
 

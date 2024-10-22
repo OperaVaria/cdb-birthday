@@ -23,8 +23,8 @@ see <https://www.gnu.org/licenses/>
 
 // Header files:
 #include <stdbool.h>
-#include <stdio.h>
 #include "dbsetup.h"
+#include "macros.h"
 #include "menu.h"
 // On Windows: include windows.h.
 #ifdef _WIN32
@@ -36,12 +36,15 @@ bool loop_active = true;
 
 // Main function:
 int main(void)
-{   
+{
     // On Windows: set console to Unicode.
     #ifdef _WIN32
         SetConsoleCP(65001);
         SetConsoleOutputCP(65001);
     #endif
+
+    // Clear screen.
+    clrscr();
 
     // Initial text.
     printf("CDbBirthday v1.4.0\n");
@@ -50,6 +53,9 @@ int main(void)
     /* Check if db file and correct table exists.
     If not, create it. */
     create_table();
+
+    // Print new line
+    printf("\n");
 
     // Application loop.
     while (loop_active)

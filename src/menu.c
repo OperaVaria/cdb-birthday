@@ -10,7 +10,6 @@ Part of the CDbBirthday project by OperaVaria.
 
 // Header files:
 #include <stdbool.h>
-#include <stdio.h>
 #include "dbop.h"
 #include "dbsetup.h"
 #include "input.h"
@@ -22,6 +21,7 @@ Part of the CDbBirthday project by OperaVaria.
 int select_menu(void)
 {
     // Menu text.
+    printf("CDbBirthday Main Menu\n");
     printf("\nSelect option:\n");
     printf("1) Add a birthday entry.\n");
     printf("2) Delete a birthday entry.\n");
@@ -34,8 +34,8 @@ int select_menu(void)
     // Prompt for selection.
     int user_opt = get_int_prompt("Enter your choice (1-7): ");
 
-    // Print newline.
-    printf("\n");
+    // Print newline if option between 1-7 selected.
+    if (between(user_opt, 1, 7)) {printf("\n");}
 
     // Return selected option.
     return user_opt;
@@ -88,7 +88,7 @@ void main_switch(int sel_opt)
 
     case 7:
         // Exit.
-        printf("Exiting...\n\n");
+        printf("Exiting...\n");
         loop_active = false;
         break;
 
@@ -98,14 +98,13 @@ void main_switch(int sel_opt)
         break;
     }
 
-    // Press return prompt.
-    if (between(sel_opt, 1, 6))
+    // Press return faux prompt.
+    if (sel_opt != 7)
     {
-        // Faux prompt.
         char ent_buff[5];
-        get_str_prompt("Press ENTER to continue.", ent_buff, 5);
-
-        // Return message.
-        printf("\nReturning to main menu...\n");
+        get_str_prompt("Press ENTER to return.", ent_buff, 5);
     }
+
+    // Clear screen.
+    clrscr();
 }

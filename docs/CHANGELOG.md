@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Date format checking.
 - SQL escaping.
+- Console clearing between menu screens.
 - Links in changelog.
 
 ### Changed

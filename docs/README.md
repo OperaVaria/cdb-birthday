@@ -9,7 +9,7 @@ The app is built mainly as a programming exercise and showcase.
 The project uses the SQLite C/C++ interface, it's amalgamation file is attached
 for easier compilation. The SQLite code **[is in the public domain](https://sqlite.org/copyright.html)**.
 
-Windows and Linux binaries are included. Tested on: Windows 11, Lubuntu 22.04 LTS.
+Windows and Linux binaries are included. Tested on: Windows 11, MX Linux 23.4, Lubuntu 22.04 LTS.
 
 ---
 
