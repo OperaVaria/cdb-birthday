@@ -102,7 +102,8 @@ void main_switch(int sel_opt)
     if (sel_opt != 7)
     {
         char ent_buff[5];
-        get_str_prompt("Press ENTER to return.", ent_buff, 5);
+        printf("Press ENTER to continue.");
+        get_input(ent_buff, 5, stdin);
     }
 
     // Clear screen.
