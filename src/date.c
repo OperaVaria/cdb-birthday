@@ -13,7 +13,7 @@ Part of the CDbBirthday project by OperaVaria.
 #include <stdbool.h>
 #include <string.h>
 #include "date.h"
-#include "macros.h"
+#include "types.h"
 
 // Static function prototypes.
 static bool validate_date_form(const char *date_string);
