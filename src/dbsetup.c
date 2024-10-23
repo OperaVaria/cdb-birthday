@@ -79,7 +79,7 @@ void check_entry_setup(Person *struct_ptr)
 /* Prepares an SQL statement to check a birthday on the current day
 or in the current month. Takes a Person struct and a date specifier string as
 arguments. */
-void check_date_setup(Person *struct_ptr, char date_spec[])
+void check_date_setup(Person *struct_ptr, const char *date_spec)
 {
     // Declare variables.
     time_t timer;
